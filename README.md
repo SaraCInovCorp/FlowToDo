@@ -1,6 +1,8 @@
-# FlowToDo
+<p align="center">
+  <img src="public/logo.png" alt="FlowToDo Logo" width="150" />
+</p>
 
-![FlowToDo Logo](public/logo.png)
+# FlowToDo
 
 FlowToDo é uma aplicação web minimalista para gestão de tarefas, criada para ajudar usuários a organizar suas atividades diárias de forma eficiente e intuitiva.
 
