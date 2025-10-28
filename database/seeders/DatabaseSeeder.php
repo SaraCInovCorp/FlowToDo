@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Task;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,7 +24,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Admin 1',
                 'is_admin' => true,
                 // demais campos padrão para criação
-                'password' => bcrypt('password'),
+                'password' => Hash::make('password'),
                 'bio' => 'Bio do admin 1',
                 'birthday' => '1990-01-01',
                 'email_verified_at' => now(),
@@ -35,7 +36,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Admin 2',
                 'is_admin' => true,
-                'password' => bcrypt('password'),
+                'password' => Hash::make('password'),
                 'bio' => 'Bio do admin 2',
                 'birthday' => '1990-01-01',
                 'email_verified_at' => now(),
@@ -47,7 +48,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Admin 3',
                 'is_admin' => true,
-                'password' => bcrypt('password'),
+                'password' => Hash::make('password'),
                 'bio' => 'Bio do admin 3',
                 'birthday' => '1990-01-01',
                 'email_verified_at' => now(),
