@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Spatie\Activitylog\Models\Activity;
+use App\Models\Task;
 
 class User extends Authenticatable
 {
@@ -22,6 +24,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'bio',
+        'birthday',
+        'is_admin',
     ];
 
     /**
@@ -47,6 +52,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
+            'birthday' => 'date',
+            'is_admin' => 'boolean',
         ];
+    }
+
+    // Relacionamento 1:n com Task
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    // Relacionamento 1:n com Activities (Spatie)
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'causer');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin === true;
     }
 }

@@ -25,12 +25,15 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
+            'bio' => fake()->paragraph(),
+            'birthday' => fake()->date(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= 'password',
+            'password' => static::$password ??= bcrypt('password'),
             'remember_token' => Str::random(10),
             'two_factor_secret' => Str::random(10),
             'two_factor_recovery_codes' => Str::random(10),
             'two_factor_confirmed_at' => now(),
+            'is_admin' => false, 
         ];
     }
 
@@ -55,4 +58,12 @@ class UserFactory extends Factory
             'two_factor_confirmed_at' => null,
         ]);
     }
+
+    public function admin(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'is_admin' => true,
+        ]);
+    }
+
 }
