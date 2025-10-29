@@ -7,7 +7,7 @@ const fetchJson = async <T>(url: string): Promise<T> => {
     });
 
     if (!response.ok) {
-        throw new Error(`Failed to fetch: ${response.status}`);
+        throw new Error(`Falha ao buscar: ${response.status}`);
     }
 
     return response.json();
@@ -31,7 +31,7 @@ export const useTwoFactorAuth = () => {
 
             qrCodeSvg.value = svg;
         } catch {
-            errors.value.push('Failed to fetch QR code');
+            errors.value.push('Falha ao obter o código QR');
             qrCodeSvg.value = null;
         }
     };
@@ -44,7 +44,7 @@ export const useTwoFactorAuth = () => {
 
             manualSetupKey.value = key;
         } catch {
-            errors.value.push('Failed to fetch a setup key');
+            errors.value.push('Falha ao obter uma chave de configuração');
             manualSetupKey.value = null;
         }
     };
@@ -72,7 +72,7 @@ export const useTwoFactorAuth = () => {
                 recoveryCodes.url(),
             );
         } catch {
-            errors.value.push('Failed to fetch recovery codes');
+            errors.value.push('Falha ao obter os códigos de recuperação');
             recoveryCodesList.value = [];
         }
     };

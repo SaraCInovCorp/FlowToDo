@@ -26,8 +26,8 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
 <template>
     <div class="space-y-6">
         <HeadingSmall
-            title="Delete account"
-            description="Delete your account and all of its resources"
+            title="Excluir conta"
+            description="Exclua sua conta e todos os seus recursos"
         />
         <div
             class="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10"
@@ -35,13 +35,13 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
             <div class="relative space-y-0.5 text-red-600 dark:text-red-100">
                 <p class="font-medium">Warning</p>
                 <p class="text-sm">
-                    Please proceed with caution, this cannot be undone.
+                    Proceda com cautela, esta ação é irreversível.
                 </p>
             </div>
             <Dialog>
                 <DialogTrigger as-child>
                     <Button variant="destructive" data-test="delete-user-button"
-                        >Delete account</Button
+                        >Excluir conta</Button
                     >
                 </DialogTrigger>
                 <DialogContent>
@@ -57,15 +57,10 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                     >
                         <DialogHeader class="space-y-3">
                             <DialogTitle
-                                >Are you sure you want to delete your
-                                account?</DialogTitle
+                                >Tem certeza de que deseja excluir sua conta?</DialogTitle
                             >
                             <DialogDescription>
-                                Once your account is deleted, all of its
-                                resources and data will also be permanently
-                                deleted. Please enter your password to confirm
-                                you would like to permanently delete your
-                                account.
+                                Após a exclusão da sua conta, todos os seus recursos e dados também serão apagados permanentemente. Digite sua senha para confirmar que deseja excluir sua conta permanentemente
                             </DialogDescription>
                         </DialogHeader>
 
@@ -94,7 +89,7 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                                         }
                                     "
                                 >
-                                    Cancel
+                                    Cancela
                                 </Button>
                             </DialogClose>
 
@@ -104,7 +99,7 @@ const passwordInput = ref<InstanceType<typeof Input> | null>(null);
                                 :disabled="processing"
                                 data-test="confirm-delete-user-button"
                             >
-                                Delete account
+                                Excluir conta
                             </Button>
                         </DialogFooter>
                     </Form>

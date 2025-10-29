@@ -72,7 +72,7 @@ onUnmounted(() => {
                             #default="{ processing }"
                         >
                             <Button type="submit" :disabled="processing">
-                                <ShieldCheck />Enable 2FA</Button
+                                <ShieldCheck />Habilitar 2FA</Button
                             ></Form
                         >
                     </div>

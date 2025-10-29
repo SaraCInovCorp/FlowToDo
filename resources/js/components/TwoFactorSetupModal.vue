@@ -46,25 +46,25 @@ const modalConfig = computed<{
 }>(() => {
     if (props.twoFactorEnabled) {
         return {
-            title: 'Two-Factor Authentication Enabled',
+            title: 'Autenticação de dois fatores ativada',
             description:
-                'Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.',
-            buttonText: 'Close',
+                'A autenticação de dois fatores agora está ativada. Escaneie o código QR ou insira a chave de configuração no seu aplicativo autenticador.',
+            buttonText: 'Fechar',
         };
     }
 
     if (showVerificationStep.value) {
         return {
-            title: 'Verify Authentication Code',
-            description: 'Enter the 6-digit code from your authenticator app',
+            title: 'Verificar código de autenticação',
+            description: 'Insira o código de 6 dígitos do seu aplicativo autenticador',
             buttonText: 'Continue',
         };
     }
 
     return {
-        title: 'Enable Two-Factor Authentication',
+        title: 'Ativar autenticação de dois fatores',
         description:
-            'To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app',
+            'Para concluir a ativação da autenticação de dois fatores, digitalize o código QR ou insira a chave de configuração no seu aplicativo autenticador',
         buttonText: 'Continue',
     };
 });
@@ -190,7 +190,7 @@ watch(
                                 class="absolute inset-0 top-1/2 h-px w-full bg-border"
                             />
                             <span class="relative bg-card px-2 py-1"
-                                >or, enter the code manually</span
+                                >Ou insira o código manualmente</span
                             >
                         </div>
 
