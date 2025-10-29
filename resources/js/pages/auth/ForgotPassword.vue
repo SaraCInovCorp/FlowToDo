@@ -17,10 +17,10 @@ defineProps<{
 
 <template>
     <AuthLayout
-        title="Forgot password"
-        description="Enter your email to receive a password reset link"
+        title="Esqueceu sua senha"
+        description="Insira seu e-mail para receber um link para redefinir sua senha"
     >
-        <Head title="Forgot password" />
+        <Head title="Esqueceu sua senha" />
 
         <div
             v-if="status"
@@ -54,14 +54,14 @@ defineProps<{
                             v-if="processing"
                             class="h-4 w-4 animate-spin"
                         />
-                        Email password reset link
+                        Link para redefinir a senha no e-mail
                     </Button>
                 </div>
             </Form>
 
             <div class="space-x-1 text-center text-sm text-muted-foreground">
-                <span>Or, return to</span>
-                <TextLink :href="login()">log in</TextLink>
+                <span>Ou, retorne a</span>
+                <TextLink :href="login()">Entrar</TextLink>
             </div>
         </div>
     </AuthLayout>

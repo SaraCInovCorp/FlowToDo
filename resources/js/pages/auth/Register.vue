@@ -13,10 +13,10 @@ import { LoaderCircle } from 'lucide-vue-next';
 
 <template>
     <AuthBase
-        title="Create an account"
-        description="Enter your details below to create your account"
+        title="Criar uma conta"
+        description="Insira seus dados abaixo para criar sua conta"
     >
-        <Head title="Register" />
+        <Head title="Registo" />
 
         <Form
             v-bind="store.form()"
@@ -41,7 +41,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="email">Email</Label>
                     <Input
                         id="email"
                         type="email"
@@ -69,7 +69,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password_confirmation">Confirm password</Label>
+                    <Label for="password_confirmation">Confirme Password</Label>
                     <Input
                         id="password_confirmation"
                         type="password"
@@ -93,17 +93,17 @@ import { LoaderCircle } from 'lucide-vue-next';
                         v-if="processing"
                         class="h-4 w-4 animate-spin"
                     />
-                    Create account
+                    Criar uma conta
                 </Button>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">
-                Already have an account?
+                Já tem uma conta?
                 <TextLink
                     :href="login()"
                     class="underline underline-offset-4"
                     :tabindex="6"
-                    >Log in</TextLink
+                    >Entrar</TextLink
                 >
             </div>
         </Form>

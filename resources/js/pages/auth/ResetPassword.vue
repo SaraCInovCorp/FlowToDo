@@ -19,10 +19,10 @@ const inputEmail = ref(props.email);
 
 <template>
     <AuthLayout
-        title="Reset password"
-        description="Please enter your new password below"
+        title="Redefinir senha"
+        description="Por favor, insira sua nova senha abaixo"
     >
-        <Head title="Reset password" />
+        <Head title="Redefinir senha" />
 
         <Form
             v-bind="update.form()"
@@ -61,7 +61,7 @@ const inputEmail = ref(props.email);
 
                 <div class="grid gap-2">
                     <Label for="password_confirmation">
-                        Confirm Password
+                        Confirme Password
                     </Label>
                     <Input
                         id="password_confirmation"
@@ -84,7 +84,7 @@ const inputEmail = ref(props.email);
                         v-if="processing"
                         class="h-4 w-4 animate-spin"
                     />
-                    Reset password
+                    Redefinir senha
                 </Button>
             </div>
         </Form>

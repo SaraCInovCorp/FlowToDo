@@ -90,6 +90,9 @@
 }
 
 :root {
+    --flowtodo-blue-escuro: #0e3357;
+    --flowtodo-blue: #1083d5;
+    --flowtodo-green: #2abc6b;
     --background: hsl(0 0% 100%);
     --foreground: hsl(0 0% 3.9%);
     --card: hsl(0 0% 100%);
@@ -127,6 +130,9 @@
 }
 
 .dark {
+    --flowtodo-blue-escuro: #0e3357;
+    --flowtodo-blue: #0f6ea9;
+    --flowtodo-green: #1f8a55;
     --background: hsl(0 0% 3.9%);
     --foreground: hsl(0 0% 98%);
     --card: hsl(0 0% 3.9%);

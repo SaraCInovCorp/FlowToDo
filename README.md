@@ -4,16 +4,16 @@
 
 # FlowToDo
 
-FlowToDo é uma aplicação web minimalista para gestão de tarefas, criada para ajudar usuários a organizar suas atividades diárias de forma eficiente e intuitiva.
+FlowToDo é uma aplicação web moderna, minimalista e responsiva para gestão de tarefas. Seu objetivo é ajudar pessoas a se manterem organizadas, reduzindo o stress e trazendo leveza à rotina.
 
 ## Visão Geral
 
 FlowToDo proporciona:
-- Criação e organização de tarefas
+- Cadastro e organização inteligente de tarefas diárias
 - Definição de prioridade e data de vencimento
 - Filtros inteligentes por estado, prioridade e vencimento
-- Marcação rápida de tarefas concluídas
-- Interface responsiva e minimalista, adaptada para desktop, tablet e mobile
+- Marcação rápida de tarefas concluídas, em apenas um clique
+- Interface adaptada para desktop, tablet e mobile, sempre clara e intuitiva
 
 ## Tecnologias
 
@@ -39,7 +39,7 @@ composer install
 npm install
 ```
 
-3. Configure o arquivo `.env` com as suas credenciais MySQL, domínio e configuração.
+3. Configure seu `.env` com as credenciais MySQL e informações de domínio.
 
 4. Execute as migrations:
 
@@ -60,15 +60,15 @@ php artisan serve
 ```
 
 
-7. Acesse a aplicação em [http://localhost:8000](http://localhost:8000) ou como no meu caso [http://nomedoprojeto.test](http://nomedoprojeto.test)
+7. Acesse em [http://localhost:8000](http://localhost:8000) ou [http://nomedoprojeto.test](http://nomedoprojeto.test).
 
-## Estrutura
+## Estrutura do Projeto
 
 - `app/` - Lógica backend e Models
-- `resources/js/` - Código Vue.js e CSS com Tailwind
-- `public/` - Arquivos estáticos como a logo da aplicação
+- `resources/js/` - Frontend Vue e estilos com Tailwind CSS
+- `public/` - Arquivos estáticos e imagens como logo e banners
 
 ---
 
-Projeto desenvolvido para estágio acadêmico.
+Projeto desenvolvido como parte de estágio acadêmico, com o foco em produtividade, organização e experiência do usuário.
 

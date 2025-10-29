@@ -15,7 +15,7 @@ import { type BreadcrumbItem } from '@/types';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Password settings',
+        title: 'Configurações de senha',
         href: edit().url,
     },
 ];
@@ -26,13 +26,13 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Password settings" />
+        <Head title="Configurações de senha" />
 
         <SettingsLayout>
             <div class="space-y-6">
                 <HeadingSmall
-                    title="Update password"
-                    description="Ensure your account is using a long, random password to stay secure"
+                    title="Atualizar senha"
+                    description="Para garantir a segurança da sua conta, utilize uma senha longa e aleatória"
                 />
 
                 <Form
@@ -50,7 +50,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                     v-slot="{ errors, processing, recentlySuccessful }"
                 >
                     <div class="grid gap-2">
-                        <Label for="current_password">Current password</Label>
+                        <Label for="current_password">Atual password</Label>
                         <Input
                             id="current_password"
                             ref="currentPasswordInput"
@@ -64,7 +64,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="password">New password</Label>
+                        <Label for="password">Novo password</Label>
                         <Input
                             id="password"
                             ref="passwordInput"
@@ -79,7 +79,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
 
                     <div class="grid gap-2">
                         <Label for="password_confirmation"
-                            >Confirm password</Label
+                            >Confirme sua senha</Label
                         >
                         <Input
                             id="password_confirmation"
@@ -96,7 +96,7 @@ const currentPasswordInput = ref<HTMLInputElement | null>(null);
                         <Button
                             :disabled="processing"
                             data-test="update-password-button"
-                            >Save password</Button
+                            >Salve password</Button
                         >
 
                         <Transition

@@ -21,10 +21,10 @@ defineProps<{
 
 <template>
     <AuthBase
-        title="Log in to your account"
-        description="Enter your email and password below to log in"
+        title="Entre na sua conta"
+        description="Insira seu e-mail e senha abaixo para fazer login"
     >
-        <Head title="Log in" />
+        <Head title="Entrar" />
 
         <div
             v-if="status"
@@ -41,7 +41,7 @@ defineProps<{
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="email">Email</Label>
                     <Input
                         id="email"
                         type="email"
@@ -64,7 +64,7 @@ defineProps<{
                             class="text-sm"
                             :tabindex="5"
                         >
-                            Forgot password?
+                            Esqueceu sua senha?
                         </TextLink>
                     </div>
                     <Input
@@ -82,7 +82,7 @@ defineProps<{
                 <div class="flex items-center justify-between">
                     <Label for="remember" class="flex items-center space-x-3">
                         <Checkbox id="remember" name="remember" :tabindex="3" />
-                        <span>Remember me</span>
+                        <span>Lembrar a senha</span>
                     </Label>
                 </div>
 
@@ -97,7 +97,7 @@ defineProps<{
                         v-if="processing"
                         class="h-4 w-4 animate-spin"
                     />
-                    Log in
+                    Entrar
                 </Button>
             </div>
 
@@ -106,7 +106,7 @@ defineProps<{
                 v-if="canRegister"
             >
                 Don't have an account?
-                <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+                <TextLink :href="register()" :tabindex="5">Inscrever-se</TextLink>
             </div>
         </Form>
     </AuthBase>

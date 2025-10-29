@@ -21,11 +21,10 @@ defineProps<{
                         class="flex flex-col items-center gap-2 font-medium"
                     >
                         <div
-                            class="mb-1 flex h-9 w-9 items-center justify-center rounded-md"
+                            class="mb-1 flex h-20 w-20 items-center justify-center rounded-md"
                         >
-                            <AppLogoIcon
-                                class="size-9 fill-current text-[var(--foreground)] dark:text-white"
-                            />
+                            <AppLogoIcon class="h-12 w-12 m-4" />
+                            <span class="font-bold text-lg text-[var(--flowtodo-blue)]">FlowToDo</span>
                         </div>
                         <span class="sr-only">{{ title }}</span>
                     </Link>
