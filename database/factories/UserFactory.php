@@ -35,6 +35,7 @@ class UserFactory extends Factory
             'two_factor_recovery_codes' => Str::random(10),
             'two_factor_confirmed_at' => now(),
             'is_admin' => false, 
+            'profile_photo_path' => fake()->imageUrl(300, 300, 'people'),
         ];
     }
 

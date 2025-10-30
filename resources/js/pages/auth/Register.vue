@@ -20,6 +20,7 @@ import { LoaderCircle } from 'lucide-vue-next';
 
         <Form
             v-bind="store.form()"
+            enctype="multipart/form-data"
             :reset-on-success="['password', 'password_confirmation']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
@@ -53,6 +54,29 @@ import { LoaderCircle } from 'lucide-vue-next';
                     />
                     <InputError :message="errors.email" />
                 </div>
+
+                <div class="grid gap-2">
+                <Label for="bio">Bio</Label>
+                <Input id="bio" type="text" name="bio" placeholder="Pequena biografia" />
+                <InputError :message="errors.bio" />
+            </div>
+
+            <div class="grid gap-2">
+                <Label for="birthday">Data de nascimento</Label>
+                <Input id="birthday" type="date" name="birthday" />
+                <InputError :message="errors.birthday" />
+            </div>
+
+            <div class="grid gap-2">
+                <Label for="profile_photo">Foto de Perfil</Label>
+                <Input
+                    id="profile_photo"
+                    type="file"
+                    name="profile_photo"
+                    accept="image/*"
+                />
+                <InputError :message="errors.profile_photo" />
+            </div>
 
                 <div class="grid gap-2">
                     <Label for="password">Password</Label>

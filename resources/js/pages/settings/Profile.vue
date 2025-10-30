@@ -45,9 +45,46 @@ const user = page.props.auth.user;
 
                 <Form
                     v-bind="ProfileController.update.form()"
+                    enctype="multipart/form-data"
                     class="space-y-6"
                     v-slot="{ errors, processing, recentlySuccessful }"
                 >
+
+                    <div class="grid gap-2">
+                        <Label for="profile_photo">Foto de Perfil</Label>
+
+                        <div class="flex items-center gap-4">
+                            <img
+                                :src="user.profile_photo_path
+                                    ? `/storage/${user.profile_photo_path}`
+                                    : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.name)"
+                                alt="Foto de perfil"
+                                class="h-16 w-16 rounded-full object-cover border"
+                            />
+
+                            <div class="flex flex-col gap-2">
+                                <Input
+                                    id="profile_photo"
+                                    type="file"
+                                    name="profile_photo"
+                                    accept="image/*"
+                                />
+
+                                <Button
+                                    v-if="user.profile_photo_path"
+                                    type="button"
+                                    variant="secondary"
+                                    class="w-fit"
+                                    @click="ProfileController.update.form().profile_photo = null"
+                                >
+                                    Remover foto
+                                </Button>
+                            </div>
+                        </div>
+
+                        <InputError :message="errors.profile_photo" />
+                    </div>
+
                     <div class="grid gap-2">
                         <Label for="name">Name</Label>
                         <Input
@@ -75,6 +112,29 @@ const user = page.props.auth.user;
                             placeholder="Email address"
                         />
                         <InputError class="mt-2" :message="errors.email" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="bio">Bio</Label>
+                        <Input
+                            id="bio"
+                            type="text"
+                            name="bio"
+                            :default-value="user.bio"
+                            placeholder="Pequena biografia"
+                        />
+                        <InputError :message="errors.bio" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="birthday">Data de nascimento</Label>
+                        <Input
+                            id="birthday"
+                            type="date"
+                            name="birthday"
+                            :default-value="user.birthday"
+                        />
+                        <InputError :message="errors.birthday" />
                     </div>
 
                     <div v-if="mustVerifyEmail && !user.email_verified_at">

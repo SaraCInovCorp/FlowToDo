@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
                 'bio' => 'Bio do admin 1',
                 'birthday' => '1990-01-01',
                 'email_verified_at' => now(),
+                'profile_photo_path' => 'profile-photos/admin1.jpg', 
             ]
         );
 
@@ -40,6 +41,7 @@ class DatabaseSeeder extends Seeder
                 'bio' => 'Bio do admin 2',
                 'birthday' => '1990-01-01',
                 'email_verified_at' => now(),
+                'profile_photo_path' => 'profile-photos/admin2.jpg', 
             ]
         );
 
@@ -52,6 +54,7 @@ class DatabaseSeeder extends Seeder
                 'bio' => 'Bio do admin 3',
                 'birthday' => '1990-01-01',
                 'email_verified_at' => now(),
+                'profile_photo_path' => 'profile-photos/admin3.jpg', 
             ]
         );
 
