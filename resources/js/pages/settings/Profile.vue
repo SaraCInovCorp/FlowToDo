@@ -2,7 +2,7 @@
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
-import { Form, Head, Link, usePage } from '@inertiajs/vue3';
+import { Form, Head, Link, usePage, useForm } from '@inertiajs/vue3';
 
 import DeleteUser from '@/components/DeleteUser.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
@@ -14,12 +14,23 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem } from '@/types';
 
+const page = usePage();
+const user = page.props.auth.user;
+
 interface Props {
     mustVerifyEmail: boolean;
     status?: string;
 }
 
 defineProps<Props>();
+
+const profileForm = useForm({
+    name: user.name || '',
+    email: user.email || '',
+    bio: user.bio || '',
+    birthday: user.birthday || '',
+    profile_photo: null,
+});
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -28,8 +39,18 @@ const breadcrumbItems: BreadcrumbItem[] = [
     },
 ];
 
-const page = usePage();
-const user = page.props.auth.user;
+function removeProfilePhoto() {
+    profileForm.profile_photo = null;
+    user.profile_photo_path = null;
+}
+
+function submit() {
+
+    profileForm.patch(edit().url, {
+    forceFormData: true, 
+  });
+}
+
 </script>
 
 <template>
@@ -44,7 +65,7 @@ const user = page.props.auth.user;
                 />
 
                 <Form
-                    v-bind="ProfileController.update.form()"
+                    v-bind="profileForm"
                     enctype="multipart/form-data"
                     class="space-y-6"
                     v-slot="{ errors, processing, recentlySuccessful }"
@@ -68,14 +89,14 @@ const user = page.props.auth.user;
                                     type="file"
                                     name="profile_photo"
                                     accept="image/*"
+                                    @change="e => profileForm.profile_photo = e.target.files[0]"
                                 />
 
                                 <Button
-                                    v-if="user.profile_photo_path"
+                                    v-if="user.profile_photo_path || profileForm.profile_photo"
                                     type="button"
-                                    variant="secondary"
-                                    class="w-fit"
-                                    @click="ProfileController.update.form().profile_photo = null"
+                                    variant="ghost"
+                                    @click="removeProfilePhoto"
                                 >
                                     Remover foto
                                 </Button>
@@ -91,7 +112,7 @@ const user = page.props.auth.user;
                             id="name"
                             class="mt-1 block w-full"
                             name="name"
-                            :default-value="user.name"
+                            v-model="profileForm.name"
                             required
                             autocomplete="name"
                             placeholder="Full name"
@@ -106,7 +127,7 @@ const user = page.props.auth.user;
                             type="email"
                             class="mt-1 block w-full"
                             name="email"
-                            :default-value="user.email"
+                            v-model="profileForm.email"
                             required
                             autocomplete="username"
                             placeholder="Email address"
@@ -120,7 +141,7 @@ const user = page.props.auth.user;
                             id="bio"
                             type="text"
                             name="bio"
-                            :default-value="user.bio"
+                            v-model="profileForm.bio"
                             placeholder="Pequena biografia"
                         />
                         <InputError :message="errors.bio" />
@@ -132,7 +153,7 @@ const user = page.props.auth.user;
                             id="birthday"
                             type="date"
                             name="birthday"
-                            :default-value="user.birthday"
+                            v-model="profileForm.birthday"
                         />
                         <InputError :message="errors.birthday" />
                     </div>
@@ -159,10 +180,12 @@ const user = page.props.auth.user;
 
                     <div class="flex items-center gap-4">
                         <Button
-                            :disabled="processing"
-                            data-test="update-profile-button"
-                            >Salve</Button
-                        >
+                            :disabled="profileForm.processing"
+                            type="button"
+                            @click="submit"
+                            >
+                            Salve
+                        </Button>
 
                         <Transition
                             enter-active-class="transition ease-in-out"
