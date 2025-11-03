@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Admin 1',
                 'is_admin' => true,
-                // demais campos padrão para criação
                 'password' => Hash::make('password'),
                 'bio' => 'Bio do admin 1',
                 'birthday' => '1990-01-01',

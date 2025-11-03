@@ -26,7 +26,7 @@ class TaskFactory extends Factory
             'description' => fake()->paragraph(),
             'status' => fake()->randomElement(['pendente', 'em_progresso', 'concluida', 'cancelada', 'arquivada']),
             'priority' => fake()->randomElement(['alta', 'media', 'baixa']),
-            'due_date' => fake()->optional()->date(),
+            'due_date' => fake()->dateTimeBetween('-10 days', '+30 days')->format('Y-m-d'),
         ];
     }
 }
