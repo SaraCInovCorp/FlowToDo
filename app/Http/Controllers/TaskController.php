@@ -40,7 +40,7 @@ class TaskController extends Controller
         ]);
     }
 
-
+    
 
     /**
      * Show the form for creating a new resource.
@@ -67,7 +67,10 @@ class TaskController extends Controller
 
         Task::create($validated);
 
-        return to_route('tasks.index')->with('success', 'Tarefa criada com sucesso!');
+        return response()->json([
+            'message' => 'Tarefa atualizada com sucesso',
+            'task' => $task->fresh(),
+        ]);
     }
 
     /**
@@ -102,10 +105,10 @@ class TaskController extends Controller
         $this->authorize('update', $task);
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+             'title' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:pendente,em_progresso,concluida,cancelada,arquivada',
-            'priority' => 'required|in:alta,media,baixa',
+            'status' => 'sometimes|required|in:pendente,em_progresso,concluida,cancelada,arquivada',
+            'priority' => 'sometimes|required|in:alta,media,baixa',
             'due_date' => 'nullable|date',
         ]);
 
