@@ -65,7 +65,7 @@ class TaskController extends Controller
 
         $validated['user_id'] = auth()->id();
 
-        Task::create($validated);
+        $task = Task::create($validated);
 
         return response()->json([
             'message' => 'Tarefa atualizada com sucesso',

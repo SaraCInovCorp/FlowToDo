@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import { edit } from '@/routes/profile';
+import { edit, update } from '@/routes/profile';
 import { send } from '@/routes/verification';
 import { Form, Head, Link, usePage, useForm } from '@inertiajs/vue3';
 
@@ -13,24 +12,49 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem } from '@/types';
+import { ref } from 'vue';
+
+interface User {
+  name: string;
+  email: string;
+  bio?: string;
+  birthday?: string;
+  profile_photo_path?: string | null;
+  is_admin?: boolean;
+  email_verified_at?: string;
+}
+
+interface ProfileForm {
+  name: string;
+  email: string;
+  bio?: string;
+  birthday?: string;
+  profile_photo: File | null;
+  remove_photo: boolean;
+  _method: string;
+}
 
 const page = usePage();
-const user = page.props.auth.user;
+const user = (page.props.auth as { user: User }).user;
 
 interface Props {
     mustVerifyEmail: boolean;
     status?: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
-const profileForm = useForm({
-    name: user.name || '',
-    email: user.email || '',
-    bio: user.bio || '',
-    birthday: user.birthday || '',
-    profile_photo: null,
+const profileForm = useForm<ProfileForm>({
+  name: user.name || '',
+  email: user.email || '',
+  bio: user.bio || '',
+  birthday: user.birthday || '',
+  profile_photo: null,
+  remove_photo: false,
+  _method: 'PATCH',
 });
+
+const previewPhoto = ref<string | null>(null);
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -39,15 +63,47 @@ const breadcrumbItems: BreadcrumbItem[] = [
     },
 ];
 
+function onFileChange(e: Event) {
+  const target = e.target as HTMLInputElement;
+  if (target.files && target.files.length > 0) {
+    const file = target.files[0];
+    profileForm.profile_photo = file;
+    profileForm.remove_photo = false;
+
+    // Gera um preview temporário
+    previewPhoto.value = URL.createObjectURL(file);
+  }
+}
+
 function removeProfilePhoto() {
-    profileForm.profile_photo = null;
-    user.profile_photo_path = null;
+  profileForm.profile_photo = null;
+  profileForm.remove_photo = true;
+  previewPhoto.value = null;
 }
 
 function submit() {
+  console.log('Form data para enviar2:', profileForm.data());
+  profileForm.post(update().url, {
+    forceFormData: true,
+    preserveScroll: true,
+    onSuccess: () => {
+        // se enviou nova imagem
+        if (previewPhoto.value) {
+            user.profile_photo_path = previewPhoto.value; // mostra preview imediatamente
+        }
 
-    profileForm.patch(edit().url, {
-    forceFormData: true, 
+        // se removeu foto
+        if (profileForm.remove_photo) {
+            user.profile_photo_path = null;
+        }
+
+        // limpa estados locais
+        previewPhoto.value = null;
+        profileForm.remove_photo = false;
+    },
+    onError: (errors) => {
+      console.error(errors);
+    },
   });
 }
 
@@ -64,24 +120,28 @@ function submit() {
                     description="Atualize seu nome e endereço de e-mail"
                 />
 
-                <Form
-                    v-bind="profileForm"
+               <Form
+                    @submit.prevent="submit"
                     enctype="multipart/form-data"
+                    :disabled="profileForm.processing"
+                    v-slot="{ errors, recentlySuccessful }"
                     class="space-y-6"
-                    v-slot="{ errors, processing, recentlySuccessful }"
-                >
+                    >
 
                     <div class="grid gap-2">
                         <Label for="profile_photo">Foto de Perfil</Label>
 
                         <div class="flex items-center gap-4">
                             <img
-                                :src="user.profile_photo_path
-                                    ? `/storage/${user.profile_photo_path}`
-                                    : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.name)"
+                                :src="previewPhoto
+                                    ? previewPhoto
+                                    : user.profile_photo_path
+                                        ? `/storage/${user.profile_photo_path}`
+                                        : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.name)"
                                 alt="Foto de perfil"
                                 class="h-16 w-16 rounded-full object-cover border"
-                            />
+                                />
+
 
                             <div class="flex flex-col gap-2">
                                 <Input
@@ -89,8 +149,9 @@ function submit() {
                                     type="file"
                                     name="profile_photo"
                                     accept="image/*"
-                                    @change="e => profileForm.profile_photo = e.target.files[0]"
-                                />
+                                    @change="onFileChange"
+                                    />
+
 
                                 <Button
                                     v-if="user.profile_photo_path || profileForm.profile_photo"

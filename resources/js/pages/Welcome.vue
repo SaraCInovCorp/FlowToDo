@@ -18,7 +18,7 @@ withDefaults(
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
-    <div class="min-h-screen bg-gradient-to-br from-[#FDFDFC] to-[#e3ffee] flex flex-col items-center justify-center p-6">
+    <div class="min-h-screen bg-linear-to-br from-[#FDFDFC] to-[#e3ffee] flex flex-col items-center justify-center p-6">
         <header class="w-full max-w-6xl flex justify-end gap-4 mb-6">
             <nav class="flex items-center gap-4">
                 <Link
@@ -48,15 +48,15 @@ withDefaults(
             <!-- Bloco 1: Logo + Slogan -->
             <div class="flex flex-col items-center justify-center pb-6">
                 <img src="/logo.png" alt="Logo FlowToDo" class="w-24 h-24 mb-2 drop-shadow-lg" />
-                <h1 class="text-3xl font-extrabold text-[var(--flowtodo-blue)] flex items-center gap-2 mb-1">
+                <h1 class="text-3xl font-extrabold text-(--flowtodo-blue) flex items-center gap-2 mb-1">
                     FlowToDo
-                    <span class="inline-flex items-center justify-center w-7 h-7 bg-[var(--flowtodo-green)] rounded-lg">
+                    <span class="inline-flex items-center justify-center w-7 h-7 bg-(--flowtodo-green) rounded-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round" style="stroke: var(--flowtodo-blue-escuro);" d="m4.5 12.75 6 6 9-13.5" />
                         </svg>
                     </span>
                 </h1>
-                <span class="font-semibold text-[var(--flowtodo-green)] text-lg text-center mb-2">Organize sua vida, conquiste seus dias</span>
+                <span class="font-semibold text-(--flowtodo-green) text-lg text-center mb-2">Organize sua vida, conquiste seus dias</span>
             </div>
             <!-- Bloco 2: Imagem principal -->
             <div class="flex items-center justify-center pb-6">
@@ -70,15 +70,15 @@ withDefaults(
                     Comece agora e sinta a diferença de ter uma vida organizada ao alcance das mãos!
                 </p>
                 <ul class="mt-1 space-y-2">
-                    <li class="flex items-center gap-2 text-[var(--flowtodo-green)] text-base">
+                    <li class="flex items-center gap-2 text-(--flowtodo-green) text-base">
                         <svg width="20" height="20" fill="none"><path d="M20 6L9 17l-5-5" style="stroke: var(--flowtodo-green);" stroke-width="2"/></svg>
                         Organize tarefas em segundos
                     </li>
-                    <li class="flex items-center gap-2 text-[var(--flowtodo-blue)] text-base">
+                    <li class="flex items-center gap-2 text-(--flowtodo-blue) text-base">
                         <svg width="20" height="20" fill="none"><path d="M20 6L9 17l-5-5" style="stroke: var(--flowtodo-blue);" stroke-width="2"/></svg>
                         Interface clara e intuitiva
                     </li>
-                    <li class="flex items-center gap-2 text-[var(--flowtodo-green)] text-base">
+                    <li class="flex items-center gap-2 text-(--flowtodo-green) text-base">
                         <svg width="20" height="20" fill="none"><path d="M20 6L9 17l-5-5" style="stroke: var(--flowtodo-green);" stroke-width="2"/></svg>
                         Sinta o alívio de estar sempre em dia
                     </li>
@@ -105,7 +105,7 @@ withDefaults(
                 <img src="/image2.png" alt="Visual extra FlowToDo" class="w-full max-w-xs rounded-xl shadow-xl" />
             </div>
         </section>
-        <footer class="mt-10 text-xs text-[var(--flowtodo-green)] text-center font-medium">
+        <footer class="mt-10 text-xs text-(--flowtodo-green) text-center font-medium">
             FlowToDo © 2025 &ndash; Organize suas metas, vença seus dias!
         </footer>
     </div>

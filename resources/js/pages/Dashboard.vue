@@ -52,61 +52,7 @@ function formatDateYmdToDmy(dateStr: string) {
 
      <div class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(300px,1fr))]">
 
-        <template v-if="props.upcomingTasks.length">
-          <Card
-            v-for="task in props.upcomingTasks.slice(0, 3)"
-            :key="task.id"
-            class="relative min-h-[220px] overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4 flex flex-col justify-between"
-          >
-            <div>
-              <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Próxima Tarefa a Vencer
-              </h2>
-              <CardTitle class="text-base whitespace-normal mb-1">{{ task.title }}</CardTitle>
-              <CardContent class="p-0">
-                <p class="text-sm">Vencimento: {{ formatDateYmdToDmy(task.due_date) }}</p>
-              </CardContent>
-            </div>
-            <CardFooter class="flex gap-2 items-center mt-2">
-              <Button asChild variant="default" size="sm" class="flex items-center gap-1">
-                <Link :href="`/tasks/${task.id}/edit`">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.25 2.25 0 113.182 3.182L7.5 19.313l-4.5 1.125 1.125-4.5L16.862 3.487z" />
-                  </svg>
-                  Editar
-                </Link>
-              </Button>
-
-             <Button
-                type="button"
-                v-if="task.status === 'pendente'"
-                variant="secondary"
-                @click.prevent="startTask(task)"
-                title="Iniciar tarefa"
-                class="flex items-center gap-2"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
-                </svg>
-                <span class="hidden sm:inline">Iniciar</span>
-              </Button>
-
-            </CardFooter>
-          </Card>
-        </template>
-
-        <Card v-else class="relative min-h-[220px] overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4 flex flex-col justify-between">
-          <p class="text-muted flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Nenhuma tarefa a vencer
-          </p>
-        </Card>
+        
 
         <template v-if="props.inProgressTasks.length">
           <Card
@@ -115,8 +61,8 @@ function formatDateYmdToDmy(dateStr: string) {
             class="relative min-h-[220px] overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4 flex flex-col justify-between"
           >
             <div>
-              <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <h2 class="text-lg font-semibold text-(--flowtodo-green) mb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-(--flowtodo-green)" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Tarefa em Andamento
@@ -167,12 +113,78 @@ function formatDateYmdToDmy(dateStr: string) {
         </template>
 
         <Card v-else class="relative min-h-[220px] overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4 flex flex-col justify-between">
-          <p class="text-muted flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <p class="text-(--flowtodo-green) flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-(--flowtodo-green)" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             Nenhuma tarefa em andamento
           </p>
+          <Button asChild variant="default" size="lg">
+            <Link href="/tasks/create">
+              Nova Tarefa
+            </Link>
+          </Button>
+        </Card>
+
+        <template v-if="props.upcomingTasks.length">
+          <Card
+            v-for="task in props.upcomingTasks.slice(0, 3)"
+            :key="task.id"
+            class="relative min-h-[220px] overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4 flex flex-col justify-between"
+          >
+            <div>
+              <h2 class="text-lg font-semibold text-(--flowtodo-blue) mb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-5 h-5 text-(--flowtodo-blue)">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+                </svg>
+                Próxima Tarefa a Vencer
+              </h2>
+              <CardTitle class="text-base whitespace-normal mb-1">{{ task.title }}</CardTitle>
+              <CardContent class="p-0">
+                <p class="text-sm">Vencimento: {{ formatDateYmdToDmy(task.due_date) }}</p>
+              </CardContent>
+            </div>
+            <CardFooter class="flex gap-2 items-center mt-2">
+              <Button asChild variant="default" size="sm" class="flex items-center gap-1">
+                <Link :href="`/tasks/${task.id}/edit`">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.25 2.25 0 113.182 3.182L7.5 19.313l-4.5 1.125 1.125-4.5L16.862 3.487z" />
+                  </svg>
+                  Editar
+                </Link>
+              </Button>
+
+             <Button
+                type="button"
+                v-if="task.status === 'pendente'"
+                variant="secondary"
+                @click.prevent="startTask(task)"
+                title="Iniciar tarefa"
+                class="flex items-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+                </svg>
+                <span class="hidden sm:inline">Iniciar</span>
+              </Button>
+
+            </CardFooter>
+          </Card>
+        </template>
+
+        <Card v-else class="relative min-h-[220px] overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border p-4 flex flex-col justify-between">
+          <p class="text-(--flowtodo-blue) flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-5 h-5 text-(--flowtodo-blue)">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+            </svg>
+            Nenhuma tarefa a vencer
+          </p>
+          <Button asChild variant="default" size="lg">
+            <Link href="/tasks/create">
+              Nova Tarefa
+            </Link>
+          </Button>
         </Card>
       </div>
 

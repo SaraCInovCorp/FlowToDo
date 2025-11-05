@@ -28,6 +28,14 @@ class ProfileUpdateRequest extends FormRequest
             'bio' => ['nullable', 'string', 'max:500'],
             'birthday' => ['nullable', 'date'],
             'profile_photo' => ['nullable', 'image', 'max:2048'],
+            'remove_photo' => ['nullable', 'boolean'],
         ];
     }
+
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    
 }

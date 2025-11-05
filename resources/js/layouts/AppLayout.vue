@@ -12,7 +12,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbs">
-        <slot />
+    <AppLayout class="bg-linear-to-br from-[#FDFDFC] to-[#e3ffee] " :breadcrumbs="breadcrumbs">
+            <slot />
     </AppLayout>
 </template>
