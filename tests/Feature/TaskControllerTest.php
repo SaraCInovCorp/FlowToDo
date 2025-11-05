@@ -50,15 +50,12 @@ it('can create a new task', function () {
 
     $response = post(route('tasks.store'), $taskData);
 
-    $response->assertStatus(200);
-    $response->assertJson([
-        'message' => 'Tarefa atualizada com sucesso',
-    ]);
+    $response->assertRedirect(route('tasks.index'));
+
     $this->assertDatabaseHas('tasks', [
         'title' => $taskData['title'],
         'user_id' => $this->user->id,
     ]);
-
 });
 
 // Testa se uma tarefa específica é exibida

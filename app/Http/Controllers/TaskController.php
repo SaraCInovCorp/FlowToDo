@@ -16,7 +16,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $query = auth()->user()->tasks();
+        $query = auth()->user()->tasks()->with('user');
 
         if ($request->filled('name')) {
             $query->where('title', 'like', '%' . $request->name . '%');
@@ -67,10 +67,7 @@ class TaskController extends Controller
 
         $task = Task::create($validated);
 
-        return response()->json([
-            'message' => 'Tarefa atualizada com sucesso',
-            'task' => $task->fresh(),
-        ]);
+        return to_route('tasks.index')->with('success', 'Tarefa criada com sucesso!');
     }
 
     /**

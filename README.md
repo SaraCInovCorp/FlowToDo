@@ -74,6 +74,32 @@ php artisan serve
 - Melhorias na visualização de datas com formato [translate:d-m-Y]
 - Paginação que preserva os filtros aplicados para navegação contínua e intuitiva
 
+## [translate:Monitoramento em Desenvolvimento com Laravel Telescope]
+
+[translate:Este projeto já vem integrado ao Laravel Telescope, uma ferramenta avançada para monitoramento de requisições, queries SQL, autenticação, erros, e envio de notificações durante o desenvolvimento.]
+
+- [translate:Facilite o debug de problemas, gargalos de performance e eventos importantes.]
+- [translate:Veja todos os detalhes de requests, logs, queries e métricas relevantes em uma interface intuitiva acessando] [translate:http://localhost:8000/telescope] [translate:(apenas em ambiente local).]
+
+**[translate:Como habilitar]:**
+1. [translate:Instale via Composer:]
+
+```
+composer require laravel/telescope --dev
+```
+
+2. [translate:Publique e migre os arquivos:]
+
+```
+php artisan telescope:install
+php artisan migrate
+```
+
+3. [translate:Acesse o painel do Telescope em] [translate:http://localhost:8000/telescope] [translate:ou seusite.test].
+
+
+> [translate:Recomendado manter ativado apenas em ambiente local para segurança e performance.]
+
 ---
 
 Projeto desenvolvido como parte de estágio acadêmico, focado em produtividade, organização e experiência intuitiva do usuário.
