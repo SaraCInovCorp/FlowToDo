@@ -13,16 +13,17 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::resource('tasks', TaskController::class);
 
-    Route::middleware('can:viewAny,App\Models\ActivityLog')->prefix('admin')->group(function () {
-        Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('admin.activity-logs.index');
-    });
+    Route::prefix('admin')
+        ->middleware('can:viewAny,App\Models\ActivityLog')
+        ->group(function () {
+            Route::get('/activity-logs', [ActivityLogController::class, 'index'])
+                ->name('admin.activity-logs.index');
+        });
 });
 
 

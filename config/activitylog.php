@@ -49,4 +49,7 @@ return [
      * Laravel's database.default will be used instead.
      */
     'database_connection' => env('ACTIVITY_LOGGER_DB_CONNECTION'),
+
+    'json_encode_options' => JSON_PRETTY_PRINT,
+
 ];

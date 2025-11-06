@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use Inertia\Inertia;
+use App\Helpers\ActivityLogger;
 
 class TaskController extends Controller
 {
@@ -67,11 +68,9 @@ class TaskController extends Controller
 
         $task = Task::create($validated);
 
-        activity()
-            ->performedOn($task)
-            ->causedBy(auth()->user())
-            ->event('created')
-            ->log('Criou a tarefa');
+        ActivityLogger::log('created', $task, 'Criou a tarefa', [
+            'attributes' => $task->toArray()
+        ]);
 
         return to_route('tasks.index')->with('success', 'Tarefa criada com sucesso!');
     }
@@ -117,11 +116,12 @@ class TaskController extends Controller
 
         $task->update($validated);
 
-        activity()
-            ->performedOn($task)
-            ->causedBy(auth()->user())
-            ->event('updated')
-            ->log('Atualizou a tarefa');
+        $changes = $task->getChanges();
+
+        ActivityLogger::log('updated', $task, 'Atualizou a tarefa', [
+            'changes' => $changes,
+        ]);
+
 
         return to_route('tasks.index')->with('success', 'Tarefa atualizada com sucesso!');
     }
@@ -135,11 +135,9 @@ class TaskController extends Controller
 
         $task->delete();
 
-        activity()
-            ->performedOn($task)
-            ->causedBy(auth()->user())
-            ->event('deleted')
-            ->log('Removeu a tarefa');
+        ActivityLogger::log('deleted', $task, 'Removeu a tarefa', [
+            'attributes' => $task->toArray()
+        ]);
 
         return to_route('tasks.index')->with('success', 'Tarefa removida.');
     }

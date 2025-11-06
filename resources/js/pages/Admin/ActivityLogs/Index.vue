@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue'
 import { Link, Head, router } from '@inertiajs/vue3'
-import { route } from '@/lib/utils' 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -14,6 +13,8 @@ import {
   CardFooter
 } from '@/components/ui/card'
 import { reactive } from 'vue'
+import { route } from 'ziggy-js'
+
 
 const props = defineProps<{
   logs: { data: Array<any>; links: Array<any> }
@@ -103,8 +104,14 @@ function sanitizePaginationLabel(label: string) {
                 <div class="text-xs text-gray-500">{{ log.event || 'N/A' }}</div>
             </CardHeader>
 
-            <CardContent class="mt-2 grow text-xs truncate">
-                <p class="whitespace-pre-wrap">{{ log.description }}</p>
+            <CardContent class="2 grow text-xs whitespace-pre-wrap">
+                <p>{{ log.description }}</p>
+                <div v-if="log.properties">
+                  <p><strong>IP:</strong> {{ log.properties.ip }}</p>
+                  <p><strong>URL:</strong> {{ log.properties.url }}</p>
+                  <p><strong>Método:</strong> {{ log.properties.method }}</p>
+                  <p><strong>User Agent:</strong> {{ log.properties.user_agent }}</p>
+                </div>
             </CardContent>
 
             <CardFooter class="mt-3 text-gray-600 text-xs flex justify-between">

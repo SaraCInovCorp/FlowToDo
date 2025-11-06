@@ -69,12 +69,9 @@ class ProfileController extends Controller
 
         $user->save();
 
-        activity()
-            ->performedOn($user)
-            ->causedBy($user)
-            ->event('updated')
-            ->log('Atualizou seu perfil');
-
+        ActivityLogger::log('updated', $user, 'Atualizou seu perfil', [
+            'changes' => $user->getChanges()
+        ]);
 
         return redirect()->route('profile.edit')->with([
             'user' => [
