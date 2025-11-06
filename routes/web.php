@@ -20,11 +20,11 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('tasks', TaskController::class);
 
-    Route::middleware('can:viewAny,Spatie\Activitylog\Models\Activity')->prefix('admin')->group(function () {
+    Route::middleware('can:viewAny,App\Models\ActivityLog')->prefix('admin')->group(function () {
         Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('admin.activity-logs.index');
     });
-
 });
+
 
 
 require __DIR__.'/settings.php';

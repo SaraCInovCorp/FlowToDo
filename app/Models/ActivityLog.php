@@ -2,22 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\Activitylog\Models\Activity as SpatieActivity;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class ActivityLog extends SpatieActivity
 {
+    protected $table = 'activity_log'; 
+
     protected $fillable = [
-        'log_name',
-        'description',
-        'subject_type',
-        'subject_id',
-        'causer_type',
-        'causer_id',
-        'properties',
-        'event',
-        'batch_uuid',
+        'log_name', 'description', 'subject_type', 'subject_id',
+        'causer_type', 'causer_id', 'properties', 'event', 'batch_uuid',
     ];
 
     protected $casts = [
@@ -25,17 +19,11 @@ class ActivityLog extends SpatieActivity
         'batch_uuid' => 'string',
     ];
 
-    /**
-     * Relação polimórfica para o modelo afetado pela atividade.
-     */
     public function subject(): MorphTo
     {
         return $this->morphTo('subject');
     }
 
-    /**
-     * Relação polimórfica para o modelo que causou a atividade.
-     */
     public function causer(): MorphTo
     {
         return $this->morphTo('causer');
