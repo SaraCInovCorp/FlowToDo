@@ -3,7 +3,7 @@ declare module 'ziggy-js' {
 
   interface Route {
     uri: string;
-    methods: ("GET" | "HEAD" | "POST" | "DELETE" | "PUT" | "PATCH" | "OPTIONS")[];
+    methods: ('GET' | 'HEAD' | 'POST' | 'DELETE' | 'PUT' | 'PATCH' | 'OPTIONS')[];
     domain?: string | null;
   }
 
@@ -23,4 +23,6 @@ declare module 'ziggy-js' {
     absolute?: boolean,
     config?: Config
   ): string;
+
+  export default route;
 }

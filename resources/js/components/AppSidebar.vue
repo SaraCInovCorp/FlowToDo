@@ -13,9 +13,20 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, CheckSquare, CalendarPlus   } from 'lucide-vue-next';
+import { Link, usePage } from '@inertiajs/vue3';
+import { LayoutGrid, CheckSquare, CalendarPlus, List   } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+
+interface AuthUser {
+  id: number
+  name: string
+  email: string
+  is_admin?: boolean
+  [key: string]: any
+}
+
+const { props } = usePage();
+const user = props.auth?.user as AuthUser;
 
 const mainNavItems: NavItem[] = [
     {
@@ -33,20 +44,32 @@ const mainNavItems: NavItem[] = [
         href: '/tasks/create',
         icon: CalendarPlus,
     },
+    
+    
 ];
 
-// const footerNavItems: NavItem[] = [
-//     {
-//         title: 'Github Repo',
-//         href: 'https://github.com/laravel/vue-starter-kit',
-//         icon: Folder,
-//     },
-//     {
-//         title: 'Documentation',
-//         href: 'https://laravel.com/docs/starter-kits#vue',
-//         icon: BookOpen,
-//     },
-// ];
+console.log(user);
+
+if (user?.is_admin) {
+    mainNavItems.push({
+        title: 'Logs',
+        href: '/admin/activity-logs', 
+        icon: List,
+    });
+}
+
+if (user?.is_admin) {
+
+const footerNavItems: NavItem[] = [
+    {
+        title: 'Logs',
+        href: '/admin/activity-logs', 
+        icon: List,
+    },
+
+];
+
+}
 </script>
 
 <template>

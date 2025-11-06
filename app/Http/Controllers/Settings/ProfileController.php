@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage; 
+use App\Helpers\ActivityLogger;
 
 class ProfileController extends Controller
 {
@@ -22,11 +23,16 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $user = auth()->user();
+        $userId = $user->id;
+
         return Inertia::render('settings/Profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
             'auth' => [
                 'user' => [
+                    'id' => $request->user()->id,
+                    'is_admin' => $request->user()->is_admin,
                     'name' => $request->user()->name,
                     'email' => $request->user()->email,
                     'bio' => $request->user()->bio,

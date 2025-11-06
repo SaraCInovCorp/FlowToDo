@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Task;
 use Illuminate\Support\Facades\Hash;
+use App\Models\ActivityLog;
 
 class DatabaseSeeder extends Seeder
 {
@@ -62,6 +63,17 @@ class DatabaseSeeder extends Seeder
             ->create([
                 'is_admin' => false,
             ]);
+
+        $users = User::all();
+
+        foreach ($users as $user) {
+            ActivityLog::factory()->create([
+                'causer_id' => $user->id,
+                'subject_type' => Task::class,
+                'subject_id' => 1, 
+                'event' => 'created',
+            ]);
+        }
 
     }
 }

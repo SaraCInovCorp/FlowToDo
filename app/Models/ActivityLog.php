@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Spatie\Activitylog\Models\Activity as SpatieActivity;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ActivityLog extends SpatieActivity
 {
+
+    use HasFactory;
+
     protected $table = 'activity_log'; 
 
     protected $fillable = [

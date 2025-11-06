@@ -6,6 +6,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use App\Helpers\ActivityLogger;
+use Illuminate\Support\Facades\Hash;
+
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -38,19 +41,25 @@ class CreateNewUser implements CreatesNewUsers
             $photoPath = $input['profile_photo']->store('profile_photos', 'public');
         }
 
-        activity()
-            ->performedOn($user)
-            ->causedBy($user)
-            ->event('created')
-            ->log('Criou uma nova conta');
-
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
-            'password' => $input['password'],
+            'password' => Hash::make($input['password']),
             'bio' => $input['bio'] ?? null,
             'birthday' => $input['birthday'] ?? null,
             'profile_photo_path' => $photoPath,
-            ]);
+        ]);
+
+        ActivityLogger::log('created', $user, 'Criou uma nova conta', [
+            'data' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'bio' => $user->bio,
+                'birthday' => $user->birthday,
+                'profile_photo_path' => $user->profile_photo_path,
+            ]
+        ]);
+
+        return $user;
     }
 }
