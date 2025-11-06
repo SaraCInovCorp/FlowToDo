@@ -38,6 +38,12 @@ class CreateNewUser implements CreatesNewUsers
             $photoPath = $input['profile_photo']->store('profile_photos', 'public');
         }
 
+        activity()
+            ->performedOn($user)
+            ->causedBy($user)
+            ->event('created')
+            ->log('Criou uma nova conta');
+
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],

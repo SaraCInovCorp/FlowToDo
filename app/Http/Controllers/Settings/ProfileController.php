@@ -69,6 +69,13 @@ class ProfileController extends Controller
 
         $user->save();
 
+        activity()
+            ->performedOn($user)
+            ->causedBy($user)
+            ->event('updated')
+            ->log('Atualizou seu perfil');
+
+
         return redirect()->route('profile.edit')->with([
             'user' => [
                 'name' => $user->name,
@@ -101,6 +108,13 @@ class ProfileController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        activity()
+            ->performedOn($user)
+            ->causedBy($user)
+            ->event('deleted')
+            ->log('Excluiu seu perfil');
+
 
         return redirect()->route('home');
     }

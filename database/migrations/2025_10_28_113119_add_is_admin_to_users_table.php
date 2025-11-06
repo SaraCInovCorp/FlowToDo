@@ -6,23 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_admin')->default(false)->after('email');
-        });
-    }
+   use HandlesAuthorization;
 
     /**
-     * Reverse the migrations.
+     * Determine se o usuário pode ver qualquer log.
      */
-    public function down(): void
+    public function viewAny(User $user): bool
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_admin');
-        });
+        return $user->is_admin === true;
     }
 };

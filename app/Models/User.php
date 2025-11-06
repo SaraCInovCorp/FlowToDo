@@ -48,16 +48,13 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'two_factor_confirmed_at' => 'datetime',
-            'birthday' => 'date',
-            'is_admin' => 'boolean',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'two_factor_confirmed_at' => 'datetime',
+        'birthday' => 'date',
+        'is_admin' => 'boolean',
+    ];
 
     // Relacionamento 1:n com Task
     public function tasks()

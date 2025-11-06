@@ -67,6 +67,12 @@ class TaskController extends Controller
 
         $task = Task::create($validated);
 
+        activity()
+            ->performedOn($task)
+            ->causedBy(auth()->user())
+            ->event('created')
+            ->log('Criou a tarefa');
+
         return to_route('tasks.index')->with('success', 'Tarefa criada com sucesso!');
     }
 
@@ -111,6 +117,12 @@ class TaskController extends Controller
 
         $task->update($validated);
 
+        activity()
+            ->performedOn($task)
+            ->causedBy(auth()->user())
+            ->event('updated')
+            ->log('Atualizou a tarefa');
+
         return to_route('tasks.index')->with('success', 'Tarefa atualizada com sucesso!');
     }
 
@@ -122,6 +134,12 @@ class TaskController extends Controller
         $this->authorize('delete', $task);
 
         $task->delete();
+
+        activity()
+            ->performedOn($task)
+            ->causedBy(auth()->user())
+            ->event('deleted')
+            ->log('Removeu a tarefa');
 
         return to_route('tasks.index')->with('success', 'Tarefa removida.');
     }
