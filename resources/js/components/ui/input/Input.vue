@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils'
 import { useVModel } from '@vueuse/core'
 
 const props = defineProps<{
+  id?: string
   defaultValue?: string | number
   modelValue?: string | number
   class?: HTMLAttributes['class']
@@ -21,6 +22,7 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 
 <template>
   <input
+    :id="props.id"
     v-model="modelValue"
     data-slot="input"
     :class="cn(

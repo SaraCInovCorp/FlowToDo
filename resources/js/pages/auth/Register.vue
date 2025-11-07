@@ -33,7 +33,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                         type="text"
                         required
                         autofocus
-                        :tabindex="1"
+                        
                         autocomplete="name"
                         name="name"
                         placeholder="Full name"
@@ -47,7 +47,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                         id="email"
                         type="email"
                         required
-                        :tabindex="2"
+                        
                         autocomplete="email"
                         name="email"
                         placeholder="email@example.com"
@@ -84,7 +84,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                         id="password"
                         type="password"
                         required
-                        :tabindex="3"
+                        
                         autocomplete="new-password"
                         name="password"
                         placeholder="Password"
@@ -98,7 +98,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                         id="password_confirmation"
                         type="password"
                         required
-                        :tabindex="4"
+                        
                         autocomplete="new-password"
                         name="password_confirmation"
                         placeholder="Confirm password"
@@ -109,7 +109,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 <Button
                     type="submit"
                     class="mt-2 w-full"
-                    tabindex="5"
+                    
                     :disabled="processing"
                     data-test="register-user-button"
                 >
@@ -126,7 +126,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 <TextLink
                     :href="login()"
                     class="underline underline-offset-4"
-                    :tabindex="6"
+                    
                     >Entrar</TextLink
                 >
             </div>

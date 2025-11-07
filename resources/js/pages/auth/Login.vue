@@ -28,7 +28,7 @@ defineProps<{
 
         <div
             v-if="status"
-            class="mb-4 text-center text-sm font-medium text-green-600"
+            class="mb-4 text-center text-sm font-medium text-green-900"
         >
             {{ status }}
         </div>
@@ -48,7 +48,7 @@ defineProps<{
                         name="email"
                         required
                         autofocus
-                        :tabindex="1"
+                        
                         autocomplete="email"
                         placeholder="email@example.com"
                     />
@@ -62,7 +62,7 @@ defineProps<{
                             v-if="canResetPassword"
                             :href="request()"
                             class="text-sm"
-                            :tabindex="5"
+                            
                         >
                             Esqueceu sua senha?
                         </TextLink>
@@ -72,7 +72,7 @@ defineProps<{
                         type="password"
                         name="password"
                         required
-                        :tabindex="2"
+                        
                         autocomplete="current-password"
                         placeholder="Password"
                     />
@@ -81,7 +81,7 @@ defineProps<{
 
                 <div class="flex items-center justify-between">
                     <Label for="remember" class="flex items-center space-x-3">
-                        <Checkbox id="remember" name="remember" :tabindex="3" />
+                        <Checkbox id="remember" name="remember"  />
                         <span>Lembrar a senha</span>
                     </Label>
                 </div>
@@ -89,7 +89,7 @@ defineProps<{
                 <Button
                     type="submit"
                     class="mt-4 w-full"
-                    :tabindex="4"
+                    
                     :disabled="processing"
                     data-test="login-button"
                 >
@@ -106,7 +106,7 @@ defineProps<{
                 v-if="canRegister"
             >
                 Don't have an account?
-                <TextLink :href="register()" :tabindex="5">Inscrever-se</TextLink>
+                <TextLink :href="register()" >Inscrever-se</TextLink>
             </div>
         </Form>
     </AuthBase>

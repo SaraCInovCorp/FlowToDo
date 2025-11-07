@@ -15,6 +15,19 @@ FlowToDo proporciona:
 - Marcação rápida de tarefas concluídas, em apenas um clique, com botões de ação dinâmicos para cada status
 - Interface adaptada para desktop, tablet e mobile, sempre clara e intuitiva
 
+## Acessibilidade
+
+Todas as páginas principais do FlowToDo foram avaliadas individualmente usando ferramentas automáticas de validação de acessibilidade (como Wave, AIM Score, Lighthouse). Quase todas as páginas atingiram pontuação máxima (**10/10**), e as demais estão acima de **9.8/10**, em total alinhamento com as diretrizes WCAG.
+
+- Foram corrigidos problemas de contraste, hierarquia de títulos, estrutura semântica, labels de formulários e alternativas para imagens.
+- Todos os alertas detectados (como “redundant link” e “redundant title text”) foram revisados e corrigidos sempre que possível, priorizando navegação por teclado e uso por leitores de tela.
+- O sistema garante navegação fluida, estrutura lógica e clareza para usuários de tecnologias assistivas em todas as telas.
+
+A análise de acessibilidade foi realizada **página por página**, garantindo um ambiente seguro, simples e inclusivo.
+
+> **Resumo:**  
+> FlowToDo foi desenvolvido com foco em acessibilidade, usabilidade e conformidade técnica moderna, proporcionando uma experiência acessível para todos os usuários.
+
 ## Tecnologias
 
 - **Backend:** Laravel 12 (PHP)

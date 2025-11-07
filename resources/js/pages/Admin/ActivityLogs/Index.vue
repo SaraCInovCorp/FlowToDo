@@ -60,7 +60,7 @@ function sanitizePaginationLabel(label: string) {
   <Head title="Logs de Atividade" />
   <AppLayout :breadcrumbs="[{ title: 'Logs de Atividade', href: route('admin.activity-logs.index') }]">
     <div class="max-w-7xl mx-auto p-4">
-
+      <h2 class="font-semibold m-4">Filtrar logs</h2>
       <form @submit.prevent="applyFilters" class="mb-6 flex flex-wrap gap-4 items-end">
         <div class="flex flex-col">
           <Label for="filter-logname">Nome do Log</Label>

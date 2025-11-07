@@ -1,75 +1,88 @@
 <script setup lang="ts">
-// import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { LayoutGrid, CheckSquare, CalendarPlus, List   } from 'lucide-vue-next';
+import { LayoutGrid, CheckSquare, CalendarPlus, List } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+import { computed } from 'vue';
 
 interface AuthUser {
-  id: number
-  name: string
-  email: string
-  is_admin?: boolean
-  [key: string]: any
+  id: number;
+  name: string;
+  email: string;
+  is_admin?: boolean;
+  [key: string]: any;
 }
 
+const page = usePage();
+const url = page.url;
 const { props } = usePage();
 const user = props.auth?.user as AuthUser;
 
+// Função para extrair a URL da rota dashboard
+function getDashboardUrl(): string {
+  const route = dashboard();
+  if (typeof route === 'string') {
+    return route;
+  }
+  // ajuste aqui conforme a estrutura do objeto retornado do dashboard(), pode ser .url ou .path
+  return (route as any).url || '';
+}
+
+const dashboardUrl = getDashboardUrl();
+
 const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-     {
-        title: 'Tarefas',
-        href: '/tasks',
-        icon: CheckSquare,
-    },
-     {
-        title: 'Nova Tarefa',
-        href: '/tasks/create',
-        icon: CalendarPlus,
-    },
-    
-    
+  {
+    title: 'Dashboard',
+    href: dashboardUrl,
+    icon: LayoutGrid,
+  },
+  {
+    title: 'Tarefas',
+    href: '/tasks',
+    icon: CheckSquare,
+  },
+  {
+    title: 'Nova Tarefa',
+    href: '/tasks/create',
+    icon: CalendarPlus,
+  },
 ];
 
-console.log(user);
-
 if (user?.is_admin) {
-    mainNavItems.push({
-        title: 'Logs',
-        href: '/admin/activity-logs', 
-        icon: List,
-    });
+  mainNavItems.push({
+    title: 'Logs',
+    href: '/admin/activity-logs',
+    icon: List,
+  });
 }
 
-if (user?.is_admin) {
+const isDashboardActive = computed(() => url.startsWith(dashboardUrl));
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Logs',
-        href: '/admin/activity-logs', 
-        icon: List,
-    },
+const filteredNavItems = computed(() =>
+  mainNavItems.filter(item => !(item.href === dashboardUrl && isDashboardActive.value))
+);
+// const footerNavItems: NavItem[] = [
+//     {
+//         title: 'Logs',
+//         href: '/admin/activity-logs', 
+//         icon: List,
+//     },
 
-];
+// ];
 
-}
+
 </script>
 
 <template>
@@ -87,7 +100,7 @@ const footerNavItems: NavItem[] = [
         </SidebarHeader>
 
         <SidebarContent>
-            <NavMain :items="mainNavItems" />
+            <NavMain :items="filteredNavItems" />
         </SidebarContent>
 
         <SidebarFooter>

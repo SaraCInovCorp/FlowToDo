@@ -84,7 +84,8 @@ function sanitizePaginationLabel(label: string) {
   <Head title="Minhas Tarefas" />
   <AppLayout :breadcrumbs="[{ title: 'Minhas Tarefas', href: tasksRoutes.index().url }]">
     <div class="max-w-6xl mx-auto p-4">
-      <div class="flex justify-end mb-6 items-center">
+      <div class="flex justify-between mb-6 items-center">
+        <h2 class="font-semibold">Pesquisar tarefas</h2>
         <Button asChild variant="default" size="lg">
           <Link :href="tasksRoutes.create().url">
             Nova Tarefa

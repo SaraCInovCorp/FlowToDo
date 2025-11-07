@@ -18,7 +18,7 @@ defineProps<Props>();
         :tabindex="tabindex"
         :method="method"
         :as="as"
-        class="text-[var(--flowtodo-blue)] decoration-neutral-300 transition-colors duration-300 ease-out hover:underline hover:text-[var(--flowtodo-blue-escuro)] hover:decoration-current! dark:decoration-neutral-500"
+        class="text-(--flowtodo-blue)] decoration-neutral-300 transition-colors duration-300 ease-out hover:underline hover:text-(--flowtodo-blue-escuro)] hover:decoration-current! dark:decoration-neutral-500"
     >
         <slot />
     </Link>
