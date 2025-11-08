@@ -70,7 +70,6 @@ function onFileChange(e: Event) {
     profileForm.profile_photo = file;
     profileForm.remove_photo = false;
 
-    // Gera um preview temporário
     previewPhoto.value = URL.createObjectURL(file);
   }
 }
@@ -87,17 +86,15 @@ function submit() {
     forceFormData: true,
     preserveScroll: true,
     onSuccess: () => {
-        // se enviou nova imagem
+        
         if (previewPhoto.value) {
-            user.profile_photo_path = previewPhoto.value; // mostra preview imediatamente
+            user.profile_photo_path = previewPhoto.value; 
         }
 
-        // se removeu foto
         if (profileForm.remove_photo) {
             user.profile_photo_path = null;
         }
 
-        // limpa estados locais
         previewPhoto.value = null;
         profileForm.remove_photo = false;
     },
@@ -219,7 +216,7 @@ function submit() {
                         <InputError :message="errors.birthday" />
                     </div>
 
-                    <div v-if="mustVerifyEmail && !user.email_verified_at">
+                    <div v-if="props.mustVerifyEmail && !user.email_verified_at">
                         <p class="-mt-4 text-sm text-muted-foreground">
                             Seu endereço de e-mail não foi verificado.
                             <Link

@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/AppLayout.vue'
 import { Head, Link } from '@inertiajs/vue3'
 import { Button } from '@/components/ui/button'
 
-const props = defineProps<{ task?: Record<string, any> }>()
+const { task } = defineProps<{ task?: Record<string, any> }>()
 
 const breadcrumbs = [
   { title: 'Tarefas', href: '/tasks' },

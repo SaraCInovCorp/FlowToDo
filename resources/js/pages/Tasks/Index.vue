@@ -8,7 +8,6 @@ import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import {
   Card,
-  CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
@@ -228,7 +227,6 @@ function sanitizePaginationLabel(label: string) {
           v-for="(link, i) in props.tasks.links"
           :key="i"
           :href="link.url || ''"
-          v-html="sanitizePaginationLabel(link.label)"
           class="mx-1 px-2 py-1 rounded"
           :class="{
             'bg-blue-600 text-white': link.active,
@@ -236,7 +234,9 @@ function sanitizePaginationLabel(label: string) {
             'pointer-events-none opacity-50': !link.url
           }"
           preserve-scroll
-        />
+        >
+          {{ sanitizePaginationLabel(link.label) }}
+        </Link>
       </nav>
     </div>
   </AppLayout>

@@ -127,7 +127,6 @@ function sanitizePaginationLabel(label: string) {
           v-for="(link, i) in props.logs.links"
           :key="i"
           :href="link.url || ''"
-          v-html="sanitizePaginationLabel(link.label)"
           class="mx-1 px-3 py-1 rounded cursor-pointer"
           :class="{
             'bg-blue-600 text-white': link.active,
@@ -135,7 +134,9 @@ function sanitizePaginationLabel(label: string) {
             'pointer-events-none opacity-50': !link.url
           }"
           preserve-scroll
-        />
+        >
+          {{ sanitizePaginationLabel(link.label) }}
+        </Link>
       </nav>
     </div>
   </AppLayout>
