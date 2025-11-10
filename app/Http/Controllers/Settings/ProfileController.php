@@ -47,11 +47,8 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request)
     {
-        Log::info('Dados recebidos', $request->all());
-
-
         $user = $request->user();
 
         $data = $request->validated();
@@ -61,8 +58,7 @@ class ProfileController extends Controller
             $user->profile_photo_path = null;
         }
 
-
-        if ($request->hasFile('profile_photo')) {
+        if ($request->hasFile('profile_photo') && !$request->boolean('remove_photo')) {
             $path = $request->file('profile_photo')->store('profile_photos', 'public');
             $user->profile_photo_path = $path;
         }
@@ -79,19 +75,14 @@ class ProfileController extends Controller
             'changes' => $user->getChanges()
         ]);
 
-        return redirect()->route('profile.edit')->with([
-            'user' => [
-                'name' => $user->name,
-                'email' => $user->email,
-                'bio' => $user->bio,
-                'birthday' => $user->birthday ? $user->birthday->format('Y-m-d') : null,
-                'profile_photo_path' => $user->profile_photo_path,
-                'email_verified_at' => $user->email_verified_at,
-            ],
+        return Inertia::render('settings/Profile', [
+            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => 'profile-updated',
+            'auth' => [
+                'user' => $user->fresh(),
+            ],
         ]);
     }
-
 
 
     /**

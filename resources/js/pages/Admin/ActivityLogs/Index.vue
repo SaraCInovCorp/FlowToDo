@@ -15,7 +15,6 @@ import {
 import { reactive } from 'vue'
 import { route } from 'ziggy-js'
 
-
 const props = defineProps<{
   logs: { data: Array<any>; links: Array<any> }
   filters: { log_name?: string; event?: string; causer_id?: string }
@@ -48,11 +47,15 @@ function applyFilters() {
 
 function sanitizePaginationLabel(label: string) {
   if (label.includes('pagination.previous')) {
-    return '&laquo; Anterior'
+    return '« Anterior'
   } else if (label.includes('pagination.next')) {
-    return 'Próximo &raquo;'
+    return 'Próximo »'
   }
   return label
+}
+
+function formatJson(value: any): string {
+  return typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)
 }
 </script>
 
@@ -64,12 +67,7 @@ function sanitizePaginationLabel(label: string) {
       <form @submit.prevent="applyFilters" class="mb-6 flex flex-wrap gap-4 items-end">
         <div class="flex flex-col">
           <Label for="filter-logname">Nome do Log</Label>
-          <Input
-            id="filter-logname"
-            type="text"
-            v-model="filters.log_name"
-            placeholder="Filtrar por log_name"
-          />
+          <Input id="filter-logname" type="text" v-model="filters.log_name" placeholder="Filtrar por log_name" />
         </div>
 
         <div class="flex flex-col">
@@ -79,18 +77,12 @@ function sanitizePaginationLabel(label: string) {
             <option value="created">created</option>
             <option value="updated">updated</option>
             <option value="deleted">deleted</option>
-            <!-- adicione outros eventos conforme necessário -->
           </Select>
         </div>
 
         <div class="flex flex-col">
           <Label for="filter-causer">ID Usuário</Label>
-          <Input
-            id="filter-causer"
-            type="text"
-            v-model="filters.causer_id"
-            placeholder="Filtrar por ID do usuário"
-          />
+          <Input id="filter-causer" type="text" v-model="filters.causer_id" placeholder="Filtrar por ID do usuário" />
         </div>
 
         <Button type="submit" variant="default" size="sm">Filtrar</Button>
@@ -99,27 +91,67 @@ function sanitizePaginationLabel(label: string) {
 
       <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         <Card v-for="log in props.logs.data" :key="log.id" class="p-4 flex flex-col justify-between">
-            <CardHeader>
-                <CardTitle class="text-sm font-medium break-all">{{ log.log_name || 'Sem nome' }}</CardTitle>
-                <div class="text-xs text-gray-500">{{ log.event || 'N/A' }}</div>
-            </CardHeader>
+          <CardHeader>
+            <CardTitle class="text-sm font-medium break-all">{{ log.log_name || 'Sem nome' }}</CardTitle>
+            <div class="text-xs mt-1">
+              <span
+                class="inline-block rounded px-2 py-0.5 text-xs font-semibold text-white"
+                :class="{
+                  'bg-green-600': log.event === 'created',
+                  'bg-yellow-600': log.event === 'updated',
+                  'bg-red-600': log.event === 'deleted',
+                  'bg-gray-500': !['created','updated','deleted'].includes(log.event)
+                }"
+              >
+                {{ log.event || 'N/A' }}
+              </span>
+            </div>
+          </CardHeader>
 
-            <CardContent class="2 grow text-xs whitespace-pre-wrap">
-                <p>{{ log.description }}</p>
-                <div v-if="log.properties">
-                  <p><strong>IP:</strong> {{ log.properties.ip }}</p>
-                  <p><strong>URL:</strong> {{ log.properties.url }}</p>
-                  <p><strong>Método:</strong> {{ log.properties.method }}</p>
-                  <p><strong>User Agent:</strong> {{ log.properties.user_agent }}</p>
-                </div>
-            </CardContent>
+          <CardContent class="grow text-xs whitespace-pre-wrap">
+            <p>{{ log.description }}</p>
+            <div v-if="log.properties">
+              <p><strong>IP:</strong> {{ log.properties.ip || '-' }}</p>
+              <p><strong>URL:</strong> {{ log.properties.url || '-' }}</p>
+              <p><strong>Método:</strong> {{ log.properties.method || '-' }}</p>
+              <p><strong>User Agent:</strong> {{ log.properties.user_agent || '-' }}</p>
 
-            <CardFooter class="mt-3 text-gray-600 text-xs flex justify-between">
-                <span>Usuário: {{ log.causer ? log.causer.name : 'Sistema' }}</span>
-                <span>Data: {{ new Date(log.created_at).toLocaleString() }}</span>
-            </CardFooter>
+              <!-- Exibe as mudanças caso existam -->
+              <div v-if="log.properties.changes">
+                <p class="mt-2 font-semibold">Mudanças:</p>
+                <ul class="list-disc list-inside font-mono text-xs bg-gray-50 p-2 rounded max-h-36 overflow-auto">
+                  <li v-for="(value, key) in log.properties.changes" :key="key">
+                    <strong>{{ key }}:</strong>
+                    <pre>{{ formatJson(value) }}</pre>
+                  </li>
+                </ul>
+              </div>
+
+              <div v-else-if="log.properties.attributes && log.properties.old">
+                <p class="mt-2 font-semibold">Antes:</p>
+                <ul class="list-disc list-inside font-mono text-xs bg-gray-50 p-2 rounded max-h-36 overflow-auto">
+                  <li v-for="(value, key) in log.properties.old" :key="key">
+                    <strong>{{ key }}:</strong>
+                    <pre>{{ formatJson(value) }}</pre>
+                  </li>
+                </ul>
+
+                <p class="mt-2 font-semibold">Depois:</p>
+                <ul class="list-disc list-inside font-mono text-xs bg-gray-50 p-2 rounded max-h-36 overflow-auto">
+                  <li v-for="(value, key) in log.properties.attributes" :key="key">
+                    <strong>{{ key }}:</strong>
+                    <pre>{{ formatJson(value) }}</pre>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+
+          <CardFooter class="mt-3 text-gray-600 text-xs flex justify-between">
+            <span>Usuário: {{ log.causer ? log.causer.name : 'Sistema' }}</span>
+            <span>Data: {{ new Date(log.created_at).toLocaleString() }}</span>
+          </CardFooter>
         </Card>
-
       </div>
 
       <nav class="flex justify-center mt-8" v-if="props.logs.links.length > 3">
