@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Inertia\Testing\AssertableInertia as Assert;
 
 test('profile page is displayed', function () {
     $user = User::factory()->create();
@@ -23,8 +24,16 @@ test('profile information can be updated', function () {
         ]);
 
     $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(route('profile.edit'));
+        ->assertStatus(200) // espera status 200 (Inertia render)
+        ->assertInertia(fn (Assert $page) => 
+            $page->component('settings/Profile')  // nome do componente Vue esperado
+                 ->has('auth.user', fn (Assert $userPage) =>
+                     $userPage->where('name', 'Test User')
+                              ->where('email', 'test@example.com')
+                              ->etc()
+                 )
+        )
+        ->assertSessionHasNoErrors();
 
     $user->refresh();
 
@@ -44,10 +53,17 @@ test('email verification status is unchanged when the email address is unchanged
         ]);
 
     $response
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(route('profile.edit'));
+        ->assertStatus(200)
+        ->assertInertia(fn (Assert $page) =>
+            $page->component('settings/Profile')
+                 ->has('auth.user', fn (Assert $userPage) =>
+                     $userPage->where('email_verified_at', $user->email_verified_at?->toISOString())
+                              ->etc()
+                 )
+        )
+        ->assertSessionHasNoErrors();
 
-    expect($user->refresh()->email_verified_at)->not->toBeNull();
+    expect($user->refresh()->email_verified_at)->not()->toBeNull();
 });
 
 test('user can delete their account', function () {
