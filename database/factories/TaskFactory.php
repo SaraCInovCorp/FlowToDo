@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\TaskType;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Task>
@@ -21,11 +22,12 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            'user_id' => User::factory(), 
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'status' => fake()->randomElement(['pendente', 'em_progresso', 'concluida', 'cancelada', 'arquivada']),
             'priority' => fake()->randomElement(['alta', 'media', 'baixa']),
+            'task_type_id' => null, 
             'due_date' => fake()->dateTimeBetween('-10 days', '+30 days')->format('Y-m-d'),
         ];
     }

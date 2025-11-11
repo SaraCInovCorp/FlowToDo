@@ -6,6 +6,8 @@ use Laravel\Fortify\Features;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\TaskTypeController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -16,7 +18,15 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Rotas para tarefas CRUD
     Route::resource('tasks', TaskController::class);
+
+    // Rotas para tipos de tarefas CRUD, exceto show (se preferir)
+    Route::resource('task-types', TaskTypeController::class)->except(['show']);
+
+    // Rota específica para ativar/desativar tipos de tarefa via AJAX
+    Route::patch('task-types/{task_type}/toggle-ativo', [TaskTypeController::class, 'toggleAtivo'])
+        ->name('task-types.toggle-ativo');
 
     Route::prefix('admin')
         ->middleware('can:viewAny,App\Models\ActivityLog')

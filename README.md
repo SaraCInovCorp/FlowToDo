@@ -12,9 +12,11 @@ FlowToDo é uma aplicação web moderna, minimalista e responsiva para gestão d
 
 FlowToDo proporciona:
 
-- Cadastro e organização inteligente de tarefas diárias
+- Cadastro e organização inteligente de tipos de tarefas, com ativação e desativação dinâmicas
+- Navegação dinâmica com menus que refletem os tipos de tarefas ativos, disponíveis globalmente em todas as páginas
+- Cadastro e organização inteligente de tarefas diárias vinculadas aos tipos
 - Definição de prioridade e data de vencimento
-- Filtros inteligentes por estado, prioridade e vencimento, utilizando componentes reutilizáveis personalizados (Input, Select, Label)
+- Filtros inteligentes por estado, prioridade, vencimento e tipo de tarefa, utilizando componentes reutilizáveis personalizados (Input, Select, Label)
 - Marcação rápida de tarefas concluídas com apenas um clique, por meio de botões de ação dinâmicos para cada status
 - Interface adaptada para desktop, tablet e mobile, sempre clara e intuitiva
 
@@ -62,6 +64,9 @@ O backend do FlowToDo é desenvolvido com Laravel 12, seguindo o padrão arquite
 - **DashboardController:**  
   Utiliza cache para entregar uma lista otimizada e atualizada de tarefas pendentes e em andamento do usuário autenticado. Essa abordagem melhora significativamente a performance da dashboard.
 
+- **TaskTypeController:**
+  Gerencia o CRUD dos tipos de tarefas, controle de ativação/desativação e disponibiliza os dados globalmente para o frontend via Inertia share, permitindo menus dinâmicos e filtragem das tarefas por tipo.
+
 - **TaskController:**  
   Implementa operações CRUD (Create, Read, Update, Delete) para o gerenciamento de tarefas. Suporta filtros detalhados (nome da tarefa, status, prioridade, data de vencimento) e aplica regras de negócio e políticas para garantir acesso seguro e validação dos dados enviados.
 
@@ -69,6 +74,9 @@ O backend do FlowToDo é desenvolvido com Laravel 12, seguindo o padrão arquite
 
 - **User:**  
   Representa os usuários da aplicação com suporte ao Laravel Fortify (autenticação, verificação por e-mail e autenticação em dois fatores). Relaciona-se com as tarefas e registros de atividades. Inclui o atributo booleano `is_admin` para controle de permissões.
+
+- **TaskType:**
+  Modelo que representa os tipos ou categorias de tarefas, com atributos como nome e campo booleano ativo para controle de disponibilidade no sistema. Relaciona-se com tarefas e é carregado globalmente para dinamicidade no menu lateral.
 
 - **Task:**  
   Modelo de tarefa vinculado a um usuário. Integra-se com o pacote *Spatie* para registro automatizado e seletivo de alterações importantes (ex.: título, status, prioridade, data). Permite histórico detalhado das operações.
@@ -130,7 +138,7 @@ Nem todas as rotas Laravel são expostas via Ziggy — apenas as necessárias pa
 - Baseado em **Vue 3** e **Composition API**, com **Inertia.js** facilitando a comunicação reativa e comportamento de SPA real.
 - Componentes de UI reutilizáveis e responsivos estilizados com **Tailwind CSS**, incluindo botões, inputs, selects, labels e cards estruturados para máxima clareza e acessibilidade.
 - Layouts específicos, como `AppLayout`, `AuthLayout` e `SettingsLayout`, estruturam as páginas principais e áreas funcionais.
-- A listagem de tarefas apresenta cartões com detalhes resumidos (título, descrição truncada, status, prioridade e vencimento formatado).
+- A listagem de tarefas apresenta cartões com detalhes resumidos (título, descrição truncada, tipo, status, prioridade e vencimento formatado).
 - Filtros dinâmicos permitem buscas refinadas com atualização em tempo real, preservando o estado e os links amigáveis.
 - Botões de ação facilitam mudanças rápidas de status das tarefas, com integração direta ao backend.
 
@@ -206,6 +214,8 @@ A análise de acessibilidade foi realizada **página por página**, garantindo u
 - Botões dinâmicos para gerenciamento rápido do status das tarefas dentro de Cards, com opções para iniciar, concluir, cancelar, desfazer ações e visualizar detalhes
 - Melhorias na visualização de datas com formato `d-m-Y`
 - Paginação que preserva os filtros aplicados para navegação contínua e intuitiva
+- Os links para os tipos de tarefa no menu direcionam para a lista de tarefas filtrada pelo tipo, utilizando URLs com query string, por exemplo: /tasks?type=3. Isso permite que o usuário veja rapidamente as tarefas daquele tipo
+- O método Inertia::share é usado no backend para compartilhar dados comuns, como os tipos de tarefa, para que menus e componentes reativos possam consumir estes dados facilmente
 
 ---
 
@@ -280,6 +290,7 @@ Acesse o painel do Telescope em http://localhost:8000/telescope ou seusite.test/
 ## Seeds e Factories
 
 - UserFactory: cria usuários de teste com dados realistas (nome, e-mail único, bio, foto de perfil simulada, status, etc). Suporta criação de administradores e usuários comuns.
+- TaskTypeFactory: gera tipos de tarefa com atributos como nome e status (ativo/inativo), garantindo testes consistentes para funcionalidades relacionadas a categorias de tarefas.
 - TaskFactory: gera tarefas associadas aos usuários, com variações de status, prioridade e datas coerentes.
 - ActivityLogFactory: cria registros de atividade simulados para auditoria.
 - DatabaseSeeder: apaga administradores duplicados, gera novos admins fixos e usuários comuns com suas respectivas tarefas e logs.

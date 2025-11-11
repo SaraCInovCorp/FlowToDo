@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Task;
+use App\Models\TaskType;
 use Illuminate\Support\Facades\Hash;
 use App\Models\ActivityLog;
 
@@ -58,22 +59,38 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        User::factory(5)
-            ->has(Task::factory()->count(10))
-            ->create([
-                'is_admin' => false,
-            ]);
+        User::factory(5)->create(['is_admin' => false])->each(function ($user) {
 
+            // Cria tipos de tarefas apenas para esse usuário
+            $taskTypes = TaskType::factory(3)->create(['user_id' => $user->id]);
+
+            $taskTypesIds = $taskTypes->pluck('id')->toArray();
+
+            // Cria tarefas associadas ao usuário e aos seus tipos de tarefa
+            Task::factory(10)->make()->each(function ($task) use ($user, $taskTypesIds) {
+                $task->user_id = $user->id;
+                if (!empty($taskTypesIds)) {
+                    $task->task_type_id = $taskTypesIds[array_rand($taskTypesIds)];
+                } else {
+                    $task->task_type_id = null;
+                }
+                $task->save();
+            });
+        });
+
+        // Cria logs de atividade para cada usuário referente a uma tarefa aleatória sua
         $users = User::all();
-
         foreach ($users as $user) {
-            ActivityLog::factory()->create([
-                'causer_id' => $user->id,
-                'subject_type' => Task::class,
-                'subject_id' => 1, 
-                'event' => 'created',
-            ]);
+            $task = $user->tasks()->inRandomOrder()->first();
+            if ($task) {
+                ActivityLog::factory()->create([
+                    'causer_id' => $user->id,
+                    'subject_type' => Task::class,
+                    'subject_id' => $task->id,
+                    'event' => 'created',
+                ]);
+            }
         }
-
     }
+
 }

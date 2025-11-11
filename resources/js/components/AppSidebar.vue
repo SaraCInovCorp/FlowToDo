@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
+import NavFooter from '@/components/NavFooter.vue';
 import {
   Sidebar,
   SidebarContent,
@@ -13,7 +14,7 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { LayoutGrid, CheckSquare, CalendarPlus, List } from 'lucide-vue-next';
+import { LayoutGrid, CheckSquare, CalendarPlus, List, Tag, BookmarkCheck } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { computed } from 'vue';
 
@@ -25,19 +26,26 @@ interface AuthUser {
   [key: string]: any;
 }
 
+interface TaskType {
+  id: number;
+  name: string;
+  ativo: boolean;
+  [key: string]: any;
+}
+
+
 const page = usePage();
 const url = page.url;
 const { props } = usePage();
 const user = props.auth?.user as AuthUser;
+const taskTypes = (props.taskTypes ?? []) as TaskType[];
 
-// Função para extrair a URL da rota dashboard
 function getDashboardUrl(): string {
   const route = dashboard();
   if (typeof route === 'string') {
     return route;
   }
-  // ajuste aqui conforme a estrutura do objeto retornado do dashboard(), pode ser .url ou .path
-  return (route as any).url || '';
+ return (route as any).url || '';
 }
 
 const dashboardUrl = getDashboardUrl();
@@ -47,6 +55,11 @@ const mainNavItems: NavItem[] = [
     title: 'Dashboard',
     href: dashboardUrl,
     icon: LayoutGrid,
+  },
+   {
+    title: 'Novo Tipo Tarefa',
+    href: 'task-types',
+    icon: BookmarkCheck,
   },
   {
     title: 'Tarefas',
@@ -73,14 +86,14 @@ const isDashboardActive = computed(() => url.startsWith(dashboardUrl));
 const filteredNavItems = computed(() =>
   mainNavItems.filter(item => !(item.href === dashboardUrl && isDashboardActive.value))
 );
-// const footerNavItems: NavItem[] = [
-//     {
-//         title: 'Logs',
-//         href: '/admin/activity-logs', 
-//         icon: List,
-//     },
+const footerNavItems: NavItem[] = taskTypes
+  .filter(tipo => tipo.ativo) 
+  .map(tipo => ({
+    title: tipo.name,
+    href: `/tasks?type=${tipo.id}`,
+    icon: Tag,
+  }));
 
-// ];
 
 
 </script>
@@ -104,7 +117,7 @@ const filteredNavItems = computed(() =>
         </SidebarContent>
 
         <SidebarFooter>
-            <!-- <NavFooter :items="footerNavItems" /> -->
+            <NavFooter :items="footerNavItems" /> 
             <NavUser />
         </SidebarFooter>
     </Sidebar>
