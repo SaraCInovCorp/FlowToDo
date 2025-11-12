@@ -7,7 +7,11 @@ import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { reactive, ref } from 'vue'
 
-const props = defineProps<{ taskTypes: Array<any> }>()
+const props = defineProps<{ 
+  taskTypes: Array<any>, 
+  errors?: Record<string, string[]> 
+}>()
+
 
 const form = reactive({
   id: null as number | null,
@@ -78,6 +82,10 @@ function toggleAtivo(tipo: any) {
         <div>
           <Label for="name">Nome</Label>
           <Input id="name" v-model="form.name" placeholder="Nome do tipo" required />
+          <p v-if="props.errors?.name" class="text-red-500 text-xs mt-1">
+            {{ Array.isArray(props.errors.name) ? props.errors.name[0] : props.errors.name }}
+          </p>
+
         </div>
         <div>
           <Label for="description">Descrição</Label>

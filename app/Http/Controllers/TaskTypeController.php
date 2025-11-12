@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\TaskType;
+use App\Helpers\ActivityLogger;
 
 class TaskTypeController extends Controller
 {
@@ -25,12 +26,20 @@ class TaskTypeController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|unique:task_types,name',
+            'name' => [
+            'required',
+            'string',
+            'unique:task_types,name,NULL,id,user_id,' . Auth::id()
+        ],
             'description' => 'nullable|string',
         ]);
 
         $data['user_id'] = Auth::id();
-        TaskType::create($data);
+        $taskType = TaskType::create($data);
+
+        ActivityLogger::log('created', $taskType, 'Criou tipo de tarefa', [
+            'attributes' => $taskType->toArray(),
+        ]);
 
         return redirect()->route('task-types.index')->with('success', 'Tipo criado com sucesso.');
     }
@@ -41,12 +50,24 @@ class TaskTypeController extends Controller
     public function update(Request $request, TaskType $task_type)
     {
         $data = $request->validate([
-            'name' => 'required|string|unique:task_types,name,' . $task_type->id,
+            'name' => [
+                'required',
+                'string',
+                'unique:task_types,name,' . $task_type->id . ',id,user_id,' . Auth::id(),
+            ],
+
             'description' => 'nullable|string',
         ]);
 
         $data['user_id'] = Auth::id();
         $task_type->update($data);
+        $changes = $task_type->getChanges();
+
+        ActivityLogger::log('updated', $task_type, 'Atualizou tipo de tarefa', [
+            'old' => $old,
+            'attributes' => $task_type->toArray(),
+            'changes' => $changes,
+        ]);
 
         return redirect()->route('task-types.index')->with('success', 'Tipo atualizado com sucesso.');
     }
@@ -56,6 +77,12 @@ class TaskTypeController extends Controller
      */
     public function destroy(string $id)
     {
+        $task_type = TaskType::findOrFail($id);
+
+        ActivityLogger::log('deleted', $task_type, 'Removeu tipo de tarefa', [
+            'attributes' => $task_type->toArray(),
+        ]);
+
         $task_type->delete();
 
         return redirect()->route('task-types.index')->with('success', 'Tipo removido com sucesso.');
@@ -63,8 +90,13 @@ class TaskTypeController extends Controller
 
     public function toggleAtivo(TaskType $task_type)
     {
+        $old = $task_type->ativo;
         $task_type->ativo = !$task_type->ativo;
         $task_type->save();
+
+        ActivityLogger::log('updated', $task_type, 'Alterou status ativo do tipo', [
+            'changes' => ['ativo' => ['old' => $old, 'new' => $task_type->ativo]],
+        ]);
 
         return response()->json(['ativo' => $task_type->ativo]);
     }

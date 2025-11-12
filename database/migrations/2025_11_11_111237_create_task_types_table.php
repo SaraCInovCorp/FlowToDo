@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('task_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('description')->nullable();
             $table->boolean('ativo')->default(true);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+            $table->unique(['user_id', 'name']);
+            
         });
     }
 
