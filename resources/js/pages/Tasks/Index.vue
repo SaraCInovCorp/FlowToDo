@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/card'
 import { reactive } from 'vue'
 
-const props = defineProps<{ tasks: { data: Array<any>, links: Array<any> } }>()
+const props = defineProps<{ tasks: { data: Array<any>, links: Array<any> }, taskTypes: Array<any> }>()
 
 function resumeDescription(desc: string): string {
   if (!desc) return 'Sem descrição'
@@ -50,6 +50,7 @@ const filters = reactive({
   status: 'todas',
   priority: 'todas',
   due_date: '',
+  task_type_id: 'todas',
 })
 
 function resetFilters() {
@@ -57,6 +58,7 @@ function resetFilters() {
   filters.status = 'todas'
   filters.priority = 'todas'
   filters.due_date = ''
+  filters.task_type_id = 'todas'
   router.get(tasksRoutes.index().url, {}, { preserveState: true })
 }
 
@@ -66,6 +68,7 @@ function applyFilters() {
     status: filters.status !== 'todas' ? filters.status : undefined,
     priority: filters.priority !== 'todas' ? filters.priority : undefined,
     due_date: filters.due_date || undefined,
+    task_type_id: filters.task_type_id !== 'todas' ? filters.task_type_id : undefined,
   }, { preserveState: true })
 }
 
@@ -125,6 +128,15 @@ function sanitizePaginationLabel(label: string) {
           <Input id="filter-due_date" type="date" v-model="filters.due_date" />
         </div>
 
+        <div class="flex flex-col">
+          <Label for="filter-task-type">Tipo de Tarefa</Label>
+          <Select id="filter-task-type" v-model="filters.task_type_id">
+            <option value="todas">Todas</option>
+            <option v-for="type in props.taskTypes" :key="type.id" :value="type.id">{{ type.name }}</option>
+          </Select>
+        </div>
+
+
         <Button type="submit" variant="default" size="sm" class="self-end">
           Filtrar
         </Button>
@@ -144,6 +156,8 @@ function sanitizePaginationLabel(label: string) {
             <span class="text-xs text-gray-500"><span class="font-bold">Status:</span> {{ task.status }}</span>
             <span class="text-xs text-gray-500"><span class="font-bold">Prioridade:</span> {{ task.priority }}</span>
             <span class="text-xs text-gray-500"><span class="font-bold">Vencimento:</span> {{ formatDateYmdToDmy(task.due_date) }}</span>
+            <span class="text-xs text-gray-500">
+            <span class="font-bold">Tipo:</span> {{ task.task_type?.name || '-' }}</span>
           </CardContent>
 
           <CardFooter class="mt-3 flex justify-between items-center gap-2">

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use Inertia\Inertia;
 use App\Helpers\ActivityLogger;
+use App\Models\TaskType;
 
 class TaskController extends Controller
 {
@@ -17,7 +18,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $query = auth()->user()->tasks()->with('user');
+        $query = auth()->user()->tasks()->with('taskType', 'user');
 
         if ($request->filled('name')) {
             $query->where('title', 'like', '%' . $request->name . '%');
@@ -31,13 +32,19 @@ class TaskController extends Controller
         if ($request->filled('due_date')) {
             $query->whereDate('due_date', $request->due_date);
         }
+        if ($request->filled('task_type_id') && $request->task_type_id !== 'todas') {
+            $query->where('task_type_id', $request->task_type_id);
+        }
 
         $tasks = $query->orderBy('due_date')
             ->paginate(6)
             ->withQueryString();
 
+        $taskTypes = TaskType::where('user_id', auth()->id())->where('ativo', true)->orderBy('name')->get();
+
         return Inertia::render('Tasks/Index', [
             'tasks' => $tasks,
+            'taskTypes' => $taskTypes,
         ]);
     }
 
@@ -48,7 +55,8 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Tasks/Create');
+        $taskTypes = TaskType::where('user_id', auth()->id())->where('ativo', true)->orderBy('name')->get();
+        return Inertia::render('Tasks/Create', ['taskTypes' => $taskTypes]);
     }
 
     /**
@@ -62,7 +70,9 @@ class TaskController extends Controller
             'status' => 'required|in:pendente,em_progresso,concluida,cancelada,arquivada',
             'priority' => 'required|in:alta,media,baixa',
             'due_date' => 'nullable|date',
+            'task_type_id' => 'required|exists:task_types,id', 
         ]);
+
 
         $validated['user_id'] = auth()->id();
 
@@ -81,9 +91,8 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         $this->authorize('view', $task);
-
         return Inertia::render('Tasks/Show', [
-            'task' => $task,
+            'task' => $task->load('taskType'), // adicione o load aqui
         ]);
     }
 
@@ -93,9 +102,10 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         $this->authorize('update', $task);
-
+        $taskTypes = TaskType::where('user_id', auth()->id())->where('ativo', true)->orderBy('name')->get();
         return Inertia::render('Tasks/Edit', [
             'task' => $task,
+            'taskTypes' => $taskTypes,
         ]);
     }
 
@@ -112,6 +122,7 @@ class TaskController extends Controller
             'status' => 'sometimes|required|in:pendente,em_progresso,concluida,cancelada,arquivada',
             'priority' => 'sometimes|required|in:alta,media,baixa',
             'due_date' => 'nullable|date',
+            'task_type_id' => 'required|exists:task_types,id',
         ]);
 
         $task->update($validated);
@@ -121,6 +132,7 @@ class TaskController extends Controller
         ActivityLogger::log('updated', $task, 'Atualizou a tarefa', [
             'changes' => $changes,
         ]);
+        \Cache::forget("dashboard_upcomingTasks_{$task->user_id}");
 
 
         return to_route('tasks.index')->with('success', 'Tarefa atualizada com sucesso!');

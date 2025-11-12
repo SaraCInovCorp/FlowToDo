@@ -32,6 +32,10 @@ function goBack() {
       <p><strong>Status:</strong> {{ task?.status || '-' }}</p>
       <p><strong>Prioridade:</strong> {{ task?.priority || '-' }}</p>
       <p><strong>Vencimento:</strong> {{ formatDateYmdToDmy(task?.due_date) }}</p>
+      <p><strong>Tipo de Tarefa:</strong> {{ task?.task_type?.name || '-' }}</p>
+      <p v-if="task?.task_type?.description">
+        <strong>Descrição do Tipo:</strong> {{ task.task_type.description }}
+      </p>
 
       <div class="flex justify-end gap-4 mt-6">
         <Button variant="ghost" size="lg" type="button" @click="goBack">

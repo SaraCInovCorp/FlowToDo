@@ -13,8 +13,9 @@ class Task extends Model
     use HasFactory, LogsActivity;
 
     protected $fillable = [
-        'user_id', 'title', 'description', 'status', 'priority', 'due_date'
+        'user_id', 'title', 'description', 'status', 'priority', 'due_date', 'task_type_id'
     ];
+
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -29,7 +30,7 @@ class Task extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function type()
+    public function taskType()
     {
         return $this->belongsTo(TaskType::class, 'task_type_id');
     }

@@ -90,7 +90,7 @@ const footerNavItems: NavItem[] = taskTypes
   .filter(tipo => tipo.ativo) 
   .map(tipo => ({
     title: tipo.name,
-    href: `/tasks?type=${tipo.id}`,
+    href: `/tasks?task_type_id=${tipo.id}`,
     icon: Tag,
   }));
 

@@ -25,16 +25,47 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-function startTask(task: any) {
-  router.put(tasksRoutes.update(task.id).url, { status: 'em_progresso' });
+type Task = {
+  id: number;
+  title: string;
+  description?: string;
+  status: string;
+  priority?: string;
+  due_date?: string;
+  task_type_id?: number;
 }
 
-function markComplete(task: any) {
-  router.put(tasksRoutes.update(task.id).url, { status: 'concluida' });
+function startTask(task: Task) {
+  router.put(tasksRoutes.update(task.id).url, {
+    title: task.title,
+    description: task.description,
+    status: 'em_progresso',
+    priority: task.priority,
+    due_date: task.due_date,
+    task_type_id: task.task_type_id,
+  });
 }
 
-function cancelTask(task: any) {
-  router.put(tasksRoutes.update(task.id).url, { status: 'cancelada' });
+function markComplete(task: Task) {
+  router.put(tasksRoutes.update(task.id).url, {
+    title: task.title,
+    description: task.description,
+    status: 'concluida',
+    priority: task.priority,
+    due_date: task.due_date,
+    task_type_id: task.task_type_id,
+  }, { onSuccess: () => router.reload() });
+}
+
+function cancelTask(task: Task) {
+  router.put(tasksRoutes.update(task.id).url, {
+    title: task.title,
+    description: task.description,
+    status: 'cancelada',
+    priority: task.priority,
+    due_date: task.due_date,
+    task_type_id: task.task_type_id,
+  }, { onSuccess: () => router.reload() });
 }
 
 function formatDateYmdToDmy(dateStr: string) {

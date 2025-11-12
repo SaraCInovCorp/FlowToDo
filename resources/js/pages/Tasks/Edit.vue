@@ -4,7 +4,7 @@ import { Head, router } from '@inertiajs/vue3'
 import { ref, watch } from 'vue'
 import { Button } from '@/components/ui/button'
 
-const props = defineProps<{ task?: any }>()
+const props = defineProps<{ task?: any, taskTypes: Array<any> }>()
 
 const form = ref({
   title: props.task.title || '',
@@ -12,6 +12,7 @@ const form = ref({
   status: props.task.status || 'pendente',
   priority: props.task.priority || 'media',
   due_date: props.task.due_date || '',
+  task_type_id: props.task?.task_type_id || '',
 })
 
 watch(() => props.task, (newTask) => {
@@ -21,6 +22,7 @@ watch(() => props.task, (newTask) => {
     status: newTask.status,
     priority: newTask.priority,
     due_date: newTask.due_date,
+    task_type_id: newTask.task_type_id || '',
   }
 })
 
@@ -75,6 +77,14 @@ const breadcrumbs = [
       <div>
         <label class="font-medium mb-1" for="due_date">Data de Vencimento</label>
         <input v-model="form.due_date" id="due_date" type="date" class="w-full border rounded px-3 py-2" />
+      </div>
+
+      <div>
+        <label class="font-medium mb-1" for="task_type_id">Tipo de Tarefa</label>
+        <select v-model="form.task_type_id" id="task_type_id" class="w-full border rounded px-3 py-2" required>
+          <option disabled value="">Selecione...</option>
+          <option v-for="type in props.taskTypes" :key="type.id" :value="type.id">{{ type.name }}</option>
+        </select>
       </div>
 
       <div class="md:col-span-2 flex justify-end gap-2">
