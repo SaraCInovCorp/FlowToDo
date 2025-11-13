@@ -73,10 +73,10 @@ function applyFilters() {
 }
 
 function sanitizePaginationLabel(label: string) {
-  if (label.includes('pagination.previous')) {
-    return '&laquo; Back'
-  } else if (label.includes('pagination.next')) {
-    return 'Next &raquo;'
+  if (label.includes('pagination.previous') || label === 'Previous' || label === 'Anterior') {
+    return '« Anterior'
+  } else if (label.includes('pagination.next') || label === 'Next' || label === 'Próxima') {
+    return 'Próxima »'
   }
   return label
 }
