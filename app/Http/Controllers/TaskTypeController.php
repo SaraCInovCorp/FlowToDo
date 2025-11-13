@@ -60,6 +60,7 @@ class TaskTypeController extends Controller
         ]);
 
         $data['user_id'] = Auth::id();
+        $old = $task_type->getOriginal();
         $task_type->update($data);
         $changes = $task_type->getChanges();
 

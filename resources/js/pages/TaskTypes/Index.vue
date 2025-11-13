@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { reactive, ref } from 'vue'
+import axios from 'axios';
 
 const props = defineProps<{ 
   taskTypes: Array<any>, 
@@ -50,24 +51,14 @@ function submitForm() {
 }
 
 function toggleAtivo(tipo: any) {
-  fetch(`/task-types/${tipo.id}/toggle-ativo`, {
-    method: 'PATCH',
-    headers: {
-      'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]')!.getAttribute('content') || '',
-      'Accept': 'application/json'
-    }
-  })
-  .then(res => {
-    if (!res.ok) throw new Error(`Erro HTTP: ${res.status}`)
-    return res.json()
-  })
-  .then(data => {
-    tipo.ativo = data.ativo
-  })
-  .catch(err => {
-    console.error('Erro ao ativar/desativar tipo:', err)
-    alert('Erro ao alterar status. Tente novamente.')
-  })
+  axios.patch(`/task-types/${tipo.id}/toggle-ativo`)
+    .then(response => {
+      tipo.ativo = response.data.ativo;
+    })
+    .catch(error => {
+      console.error('Erro ao ativar/desativar tipo:', error);
+      alert('Erro ao alterar status. Tente novamente.');
+    });
 }
 
 </script>
