@@ -31,6 +31,7 @@ FlowToDo proporciona:
 - **Monitoramento:** Laravel Telescope
 - **Helpers globais:** `app/Helpers/helpers.php`
 - **Gerenciamento de rotas no frontend:** Ziggy
+- **Comunicação HTTP:** Axios para chamadas HTTP com suporte automático a tokens CSRF e cookies de sessão
 
 ---
 
@@ -142,6 +143,34 @@ Nem todas as rotas Laravel são expostas via Ziggy — apenas as necessárias pa
 - Filtros dinâmicos permitem buscas refinadas com atualização em tempo real, preservando o estado e os links amigáveis.
 - Botões de ação facilitam mudanças rápidas de status das tarefas, com integração direta ao backend.
 
+---
+
+## Frontend — Axios para requisições HTTP seguras
+
+Para garantir a comunicação segura com o backend, especialmente em chamadas que alteram dados (PUT, PATCH, DELETE), a aplicação utiliza o **axios** no frontend para enviar as requisições HTTP. O axios automaticamente utiliza o token CSRF gerado pelo Laravel (disponível na meta tag) e envia junto os cookies de sessão, prevenindo erros comuns como o “CSRF token mismatch” (Erro 419).
+
+Exemplo de uso para ativar ou desativar o status de um tipo de tarefa:
+
+```
+import axios from 'axios';
+
+function toggleAtivo(tipo: any) {
+axios.patch(/task-types/${tipo.id}/toggle-ativo)
+.then(response => {
+tipo.ativo = response.data.ativo;
+})
+.catch(error => {
+console.error('Erro ao ativar/desativar tipo:', error);
+alert('Erro ao alterar status. Tente novamente.');
+});
+}
+```
+
+Para instalar o axios e garantir seu funcionamento:
+
+```
+npm install axios
+```
 ---
 
 ## Instalação e Uso
@@ -438,6 +467,45 @@ Testa exclusão de tarefa e reforça ausência no banco após remoção.
 
 **can filter tasks by name, status, priority and due date**  
 Confirma que filtros funcionam combinado critérios e refletem na listagem.
+
+---
+
+### Gestão de Tipos de Tarefas
+
+**can show list of task types**  
+Valida que o sistema exibe corretamente a lista de tipos de tarefas para o usuário.
+
+**can create a new task type**  
+Assegura que o sistema permite criar novos tipos com validação adequada.
+
+**can edit task type**  
+Testa a edição e atualização das informações de um tipo de tarefa existente.
+
+**can toggle ativo status for task type**  
+Verifica a ativação e desativação dinâmica de tipos de tarefa, essencial para controle da disponibilidade.
+
+**can delete a task type**  
+Confirma que tipos podem ser removidos com sucesso do sistema.
+
+```
+it('can toggle ativo status for task type', function () {
+$taskType = TaskType::factory()->for($this->user)->create(['ativo' => true]);
+```
+
+```
+// Toggle para false (0)
+$response = patch(route('task-types.toggle-ativo', $taskType->id));
+$response->assertOk();
+$taskType = $taskType->fresh();
+expect($taskType->ativo)->toBeFalsy();
+
+// Toggle para true (1)
+$response = patch(route('task-types.toggle-ativo', $taskType->id));
+$response->assertOk();
+$taskType = $taskType->fresh();
+expect($taskType->ativo)->toBeTruthy();
+
+```
 
 ---
 
